@@ -1,6 +1,6 @@
 import { Image, Nullable } from '@/types/misc';
 import { Seller } from '@/types/models/administrator/seller';
-import { Sender } from '@/types/models/administrator/sender';
+import { Sender } from '@/types/models/sender';
 import { Comment } from '@/types/models/comment';
 import { Rating } from '@/types/models/rating';
 

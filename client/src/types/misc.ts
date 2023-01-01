@@ -1,5 +1,8 @@
 import { Modes } from '@/constants';
 import { MRT_ColumnDef } from 'material-react-table';
+import { Administrator } from '@/types/models/administrator/administrator';
+import { Buyer } from '@/types/models/administrator/buyer';
+import { Seller } from '@/types/models/administrator/seller';
 
 export type ObjectAsType<T> = T[keyof T];
 
@@ -34,3 +37,5 @@ export type Response<T> = {
 export type SenderType = Modes;
 
 export type Valid = any;
+
+export type User = Administrator | Buyer | Seller;

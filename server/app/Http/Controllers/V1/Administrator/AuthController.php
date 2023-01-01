@@ -23,6 +23,7 @@ class AuthController extends Controller
             $administrator = $this->guard->userOrFail();
 
             return AdministratorResource::make($administrator)->additional([
+                'type' => 'administrator',
                 'access' => [
                     'type' => 'bearer',
                     'token' => $token,

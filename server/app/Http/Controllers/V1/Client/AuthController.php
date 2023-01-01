@@ -36,6 +36,7 @@ class AuthController extends Controller
             }
 
             return ClientResource::make($client)->additional([
+                'type' => 'buyer',
                 'access' => [
                     'type' => 'bearer',
                     'token' => $token,

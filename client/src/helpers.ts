@@ -1,4 +1,5 @@
 import swal from 'sweetalert';
+import { Rating } from '@/types/models/rating';
 
 export function createTokenHeader(token: string) {
     return {
@@ -52,4 +53,20 @@ export class Asker {
 
 export function toBool(data: unknown) {
     return data ? true : false;
+}
+
+export function calculateRatings(ratings: Rating[]) {
+    if (ratings.length === 0) {
+        return 0;
+    }
+
+    const stars = ratings.map((rating) => rating.value);
+
+    const value = stars.reduce((a, b) => a + b, 0) / stars.length;
+
+    return Number.isInteger(value) ? value : Number(value.toFixed(1));
+}
+
+export function call<T extends () => void>(callback: T) {
+    return callback();
 }

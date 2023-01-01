@@ -1,6 +1,8 @@
+import { calculateRatings } from '@/helpers';
+import { useService } from '@/hooks';
+import { StorageService } from '@/services/storage';
 import { Modes } from '@/types/misc';
 import type { Pond as Model } from '@/types/models/pond';
-import { Rating } from '@/types/models/rating';
 import {
     Card,
     CardHeader,
@@ -8,48 +10,44 @@ import {
     Typography,
     CardFooter,
 } from '@material-tailwind/react';
+import { Divider } from '@mui/material';
 import { Link } from '@tanstack/react-location';
 import React, { FC } from 'react';
+import ReactStars from 'react-stars';
 
 type Props = {
     mode: Modes;
     data: Model;
+    cardClassName?: string;
+    headerClassName?: string;
+    bodyClassName?: string;
 };
 
-const Pond: FC<Props> = ({ mode, data }) => {
-    const calculateRatings = (ratings: Rating[]) => {
-        if (ratings.length === 0) {
-            return 'No Ratings';
-        }
+const Pond: FC<Props> = ({
+    mode,
+    data,
+    cardClassName,
+    headerClassName,
+    bodyClassName,
+}) => {
+    const storage = useService(StorageService);
 
-        const fiveStars = ratings.filter((rating) => rating.value === 5).length;
-        const fourStars = ratings.filter((rating) => rating.value === 4).length;
-        const threeStars = ratings.filter(
-            (rating) => rating.value === 3
-        ).length;
-        const twoStars = ratings.filter((rating) => rating.value === 2).length;
-        const oneStars = ratings.filter((rating) => rating.value === 1).length;
+    const determineIfStarsAreEditable = () => {
+        const type = storage.get<Modes>('type');
 
-        return (
-            (5 * fiveStars +
-                4 * fourStars +
-                3 * threeStars +
-                2 * twoStars +
-                1 * oneStars) /
-            (fiveStars + fourStars + threeStars + twoStars + oneStars)
-        );
+        return type === 'buyer';
     };
 
     return (
-        <Card className='w-80 border border-gray-100 shadow-lg'>
-            <CardHeader className='relative h-56'>
+        <Card className={cardClassName}>
+            <CardHeader className={headerClassName}>
                 <img
                     src={data.image.url}
                     alt='img-blur-shadow'
                     className='h-full w-full object-cover'
                 />
             </CardHeader>
-            <CardBody className='text-center'>
+            <CardBody className={bodyClassName}>
                 <Typography variant='h5' className='mb-2'>
                     <Link
                         to={`/${mode}/dashboard/${data.id}`}
@@ -58,7 +56,15 @@ const Pond: FC<Props> = ({ mode, data }) => {
                         {data.name}
                     </Link>
                 </Typography>
-                <Typography>{data.description}</Typography>
+                <Typography variant='small' className='font-bold'>
+                    {data.owner?.first_name} {data.owner?.last_name}
+                </Typography>
+                <div className='pt-4 pb-2'>
+                    <Divider />
+                </div>
+                <Typography variant='small' className='mt-2'>
+                    {data.description}
+                </Typography>
             </CardBody>
             <CardFooter
                 divider
@@ -66,9 +72,10 @@ const Pond: FC<Props> = ({ mode, data }) => {
             >
                 <Typography variant='small'>
                     {data.ratings ? (
-                        <span className='font-bold'>
-                            {calculateRatings(data.ratings)}
-                        </span>
+                        <ReactStars
+                            value={calculateRatings(data.ratings)}
+                            edit={determineIfStarsAreEditable()}
+                        />
                     ) : (
                         <span className='font-bold'>No Ratings</span>
                     )}

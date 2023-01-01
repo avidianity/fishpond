@@ -26,6 +26,7 @@ class AuthController extends Controller
             $owner = $this->guard->userOrFail();
 
             return OwnerResource::make($owner)->additional([
+                'type' => 'seller',
                 'access' => [
                     'type' => 'bearer',
                     'token' => $token,

@@ -1,9 +1,15 @@
-import { Modes } from '@/types/misc';
+import type { Modes as Mode } from '@/types/misc';
 import { Button, Input } from '@material-tailwind/react';
-import { Link } from '@tanstack/react-location';
+import { Link, useNavigate } from '@tanstack/react-location';
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import MaterialIcon from '@/components/MaterialIcon';
+import { Modes } from '@/constants';
+import { isAxiosError } from 'axios';
+import { toast } from 'react-toastify';
+import { useService } from '@/hooks';
+import { StorageService } from '@/services/storage';
+import { AuthResponse } from '@/types/responses/auth';
 
 type Inputs = {
     email: string;
@@ -11,24 +17,48 @@ type Inputs = {
 };
 
 type Props = {
-    mode: Modes;
+    mode: Mode;
     allowRegister?: boolean;
-    onSubmit: (payload: Inputs) => Promise<void>;
+    onSubmit: (payload: Inputs) => Promise<AuthResponse>;
 };
 
 const Login: FC<Props> = ({ mode, allowRegister, onSubmit }) => {
     const [processing, setProcessing] = useState(false);
     const { register, handleSubmit } = useForm<Inputs>();
+    const navigate = useNavigate();
+    const storage = useService(StorageService);
 
     const submit = handleSubmit(async (payload) => {
         setProcessing(true);
 
         try {
-            await onSubmit(payload);
-            setProcessing(false);
+            const response = await onSubmit(payload);
+
+            storage.set('token', response.access.token);
+            storage.set('type', response.type);
+
+            let userName = '';
+
+            if (response.type === Modes.ADMINISTRATOR) {
+                userName = response.data.email;
+            } else {
+                userName = `${response.data.first_name} ${response.data.last_name}`;
+            }
+
+            toast.success(`Welcome back, ${userName}!`);
+            navigate({
+                to: `/${mode}/dashboard/`,
+                replace: true,
+            });
         } catch (error) {
+            if (isAxiosError(error)) {
+                toast.error(error.response?.data?.message);
+            } else {
+                console.log(error);
+                toast.error('Something went wrong. Please try again later.');
+            }
+        } finally {
             setProcessing(false);
-            throw error;
         }
     });
 

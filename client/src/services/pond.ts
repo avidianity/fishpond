@@ -1,5 +1,5 @@
 import { HttpService } from '@/services/http';
-import type { Response } from '@/types/misc';
+import type { Modes, Response } from '@/types/misc';
 import { Sender } from '@/types/models/sender';
 import { Comment } from '@/types/models/comment';
 import type { Pond } from '@/types/models/pond';
@@ -20,25 +20,9 @@ export class PondService {
         return PondService.instance;
     }
 
-    public async all() {
-        const { data } = await this.http.get<Response<Pond[]>>(
-            '/v1/administrator/ponds'
-        );
-
-        return data.data;
-    }
-
-    public async show(id: string) {
-        const { data } = await this.http.get<Response<Pond>>(
-            `/v1/administrator/ponds/${id}`
-        );
-
-        return data.data;
-    }
-
-    public async comment(id: string, message: string) {
+    public async comment(mode: Modes, id: string, message: string) {
         const { data } = await this.http.post<Response<Comment<Sender, Pond>>>(
-            '/v1/administrator/ponds/comment',
+            `/v1/${mode}/ponds/comment`,
             { message, pond_id: id }
         );
 

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Client;
 use App\Models\Owner;
 use App\Models\Pond;
 use Illuminate\Database\Seeder;
@@ -15,6 +16,12 @@ class PondSeeder extends Seeder
      */
     public function run()
     {
-        Pond::factory(5)->for(Owner::factory())->create();
+        $ponds = Pond::factory(5)->for(Owner::factory())->create();
+
+        foreach ($ponds as $pond) {
+            foreach (range(0, random_int(2, 10)) as $_) {
+                $pond->rate(Client::factory()->create(), random_int(1, 5));
+            }
+        }
     }
 }

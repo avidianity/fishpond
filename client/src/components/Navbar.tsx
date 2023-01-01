@@ -6,6 +6,10 @@ import {
     IconButton,
     MobileNav,
     Navbar as BaseNavbar,
+    Menu,
+    MenuHandler,
+    MenuList,
+    MenuItem,
 } from '@material-tailwind/react';
 import { Link, useNavigate } from '@tanstack/react-location';
 import React, { FC, useEffect, useState } from 'react';
@@ -44,6 +48,8 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
         });
     };
 
+    const go = (to: string) => navigate({ to });
+
     const navList = (
         <ul className='mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6'>
             {links.map((link, index) => (
@@ -72,6 +78,45 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
         </ul>
     );
 
+    const menu = (mobile: boolean) => (
+        <Menu>
+            <MenuHandler>
+                <Button
+                    color='blue'
+                    type='button'
+                    variant='gradient'
+                    size='sm'
+                    className={
+                        mobile
+                            ? 'hidden lg:inline-block'
+                            : 'inline-block lg:hidden'
+                    }
+                >
+                    <span>Menu</span>
+                </Button>
+            </MenuHandler>
+            <MenuList>
+                <MenuItem
+                    onClick={(e) => {
+                        e.preventDefault();
+                        return;
+                        go(`/${mode}/dashboard/settings`);
+                    }}
+                >
+                    Settings
+                </MenuItem>
+                <MenuItem
+                    onClick={(e) => {
+                        e.preventDefault();
+                        logout();
+                    }}
+                >
+                    Logout
+                </MenuItem>
+            </MenuList>
+        </Menu>
+    );
+
     useEffect(() => {
         window.addEventListener(
             'resize',
@@ -84,26 +129,14 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
             <div className='container mx-auto flex items-center justify-between text-blue-gray-900'>
                 <Typography
                     as='a'
-                    href={`/${mode}/dashboard`}
+                    href={`/${mode}/dashboard/`}
                     variant='small'
                     className='mr-4 cursor-pointer py-1.5 font-normal'
                 >
                     <span>Fishpond</span>
                 </Typography>
                 <div className='hidden lg:block'>{navList}</div>
-                <Button
-                    color='red'
-                    type='button'
-                    variant='gradient'
-                    size='sm'
-                    className='hidden lg:inline-block'
-                    onClick={(e) => {
-                        e.preventDefault();
-                        logout();
-                    }}
-                >
-                    <span>Logout</span>
-                </Button>
+                {menu(true)}
                 <IconButton
                     variant='text'
                     className='ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden'
@@ -144,20 +177,7 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
             </div>
             <MobileNav open={open}>
                 {navList}
-                <Button
-                    color='red'
-                    type='button'
-                    variant='gradient'
-                    size='sm'
-                    fullWidth
-                    className='mb-2'
-                    onClick={(e) => {
-                        e.preventDefault();
-                        logout();
-                    }}
-                >
-                    <span>Logout</span>
-                </Button>
+                {menu(false)}
             </MobileNav>
         </BaseNavbar>
     );
