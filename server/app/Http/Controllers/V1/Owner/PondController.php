@@ -28,6 +28,7 @@ class PondController extends Controller
     {
         $ponds = $request->owner()
             ->ponds()
+            ->with($this->relationships)
             ->get();
 
         return PondResource::collection($ponds);
