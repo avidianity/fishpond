@@ -4,6 +4,7 @@ import { TableColumns } from '@/types/misc';
 import { Issue } from '@/types/models/administrator/issue';
 import { useIssueList } from '@/hooks/api/administrator/issue';
 import dayjs from 'dayjs';
+import { Link } from '@tanstack/react-location';
 
 const Issues: FC = () => {
     const data = useIssueList();
@@ -11,7 +12,14 @@ const Issues: FC = () => {
     const columns = useMemo<TableColumns<Issue>>(
         () => [
             {
-                accessorKey: 'pond.name',
+                accessorFn: (row) => (
+                    <Link
+                        to={`/administrator/dashboard/${row.pond?.id}`}
+                        className='text-blue-500 hover:underline font-bold'
+                    >
+                        {row.pond?.name}
+                    </Link>
+                ),
                 header: 'Pond',
             },
             {

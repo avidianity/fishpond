@@ -3,8 +3,7 @@ import type { Response } from '@/types/misc';
 import { Sender } from '@/types/models/sender';
 import { Comment } from '@/types/models/comment';
 import type { Pond } from '@/types/models/pond';
-import { Rating } from '@/types/models/rating';
-import { Issue } from '@/types/models/buyer/issue';
+import { PondPayload } from '@/types/payloads/pond';
 
 export class PondService {
     protected static instance: PondService;
@@ -24,7 +23,7 @@ export class PondService {
 
     public async all() {
         const { data } = await this.http.get<Response<Pond[]>>(
-            '/v1/client/ponds'
+            '/v1/owner/ponds'
         );
 
         return data.data;
@@ -32,40 +31,38 @@ export class PondService {
 
     public async show(id: string) {
         const { data } = await this.http.get<Response<Pond>>(
-            `/v1/client/ponds/${id}`
+            `/v1/owner/ponds/${id}`
         );
 
         return data.data;
     }
 
+    public async store(payload: PondPayload) {
+        const { data } = await this.http.post<Response<Pond>>(
+            '/v1/owner/ponds',
+            payload
+        );
+
+        return data;
+    }
+
+    public async update(id: string, payload: PondPayload) {
+        const { data } = await this.http.put<Response<Pond>>(
+            `/v1/owner/ponds/${id}`,
+            payload
+        );
+
+        return data;
+    }
+
+    public async destroy(id: string) {
+        await this.http.delete(`/v1/owner/ponds/${id}`);
+    }
+
     public async comment(id: string, message: string) {
         const { data } = await this.http.post<Response<Comment<Sender, Pond>>>(
-            '/v1/client/ponds/comment',
+            '/v1/owner/ponds/comment',
             { message, pond_id: id }
-        );
-
-        return data;
-    }
-
-    public async rate(id: string, rating: number) {
-        const { data } = await this.http.post<Response<Rating>>(
-            '/v1/client/ponds/rate',
-            {
-                pond_id: id,
-                value: rating,
-            }
-        );
-
-        return data;
-    }
-
-    public async report(id: string, message: string) {
-        const { data } = await this.http.post<Response<Issue>>(
-            '/v1/client/issues',
-            {
-                pond_id: id,
-                message,
-            }
         );
 
         return data;

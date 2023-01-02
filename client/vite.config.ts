@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import eslintPlugin from '@nabla/vite-plugin-eslint';
 import eslintConfig from './.eslintrc.json';
-import { Linter } from 'eslint';
+import type { Linter } from 'eslint';
 import { resolve } from 'path';
 
 // https://vitejs.dev/config/

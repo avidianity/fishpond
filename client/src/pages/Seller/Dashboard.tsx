@@ -19,7 +19,7 @@ const Dashboard: FC = () => {
                 onLogout={async () => {
                     await logout();
                 }}
-                mode={Modes.BUYER}
+                mode={Modes.SELLER}
                 links={[
                     {
                         to: '',

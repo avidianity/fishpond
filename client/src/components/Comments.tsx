@@ -34,7 +34,7 @@ const Comments: FC<Props> = ({ mode, comments, id }) => {
     const authId = storage.get('id');
 
     const submit = handleSubmit(async (payload) => {
-        await mutation.mutateAsync(payload.message);
+        mutation.mutate(payload.message);
         reset();
     });
 

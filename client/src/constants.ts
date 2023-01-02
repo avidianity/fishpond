@@ -3,3 +3,9 @@ export const Modes = {
     BUYER: 'buyer',
     SELLER: 'seller',
 } as const;
+
+export const PondStatus = {
+    AVAILABLE: 'Available',
+    SOLD: 'Sold',
+    ON_HOLD: 'On Hold',
+} as const;

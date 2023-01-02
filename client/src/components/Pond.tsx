@@ -1,4 +1,4 @@
-import { calculateRatings } from '@/helpers';
+import { calculateRatings, getStatusColor } from '@/helpers';
 import { useService } from '@/hooks';
 import { usePondRate } from '@/hooks/api/buyer/pond';
 import { StorageService } from '@/services/storage';
@@ -35,7 +35,7 @@ const Pond: FC<Props> = ({
     const mutation = usePondRate(data.id);
 
     const rate = async (rating: number) => {
-        await mutation.mutateAsync(rating);
+        mutation.mutate(rating);
     };
 
     const determineIfStarsAreEditable = () => {
@@ -62,9 +62,11 @@ const Pond: FC<Props> = ({
                         {data.name}
                     </Link>
                 </Typography>
-                <Typography variant='small' className='font-bold'>
-                    {data.owner?.first_name} {data.owner?.last_name}
-                </Typography>
+                {data.owner ? (
+                    <Typography variant='small' className='font-bold'>
+                        {data.owner.first_name} {data.owner.last_name}
+                    </Typography>
+                ) : null}
                 <div className='pt-4 pb-2'>
                     <Divider />
                 </div>
@@ -76,23 +78,27 @@ const Pond: FC<Props> = ({
                 divider
                 className='flex items-center justify-between py-3'
             >
-                <Typography variant='small'>
-                    {data.ratings ? (
-                        <ReactStars
-                            value={calculateRatings(data.ratings)}
-                            edit={determineIfStarsAreEditable()}
-                            onChange={(rating) => {
-                                if (determineIfStarsAreEditable()) {
-                                    rate(rating);
-                                }
-                            }}
-                        />
-                    ) : (
+                {data.ratings ? (
+                    <ReactStars
+                        value={calculateRatings(data.ratings)}
+                        edit={determineIfStarsAreEditable()}
+                        onChange={(rating) => {
+                            if (determineIfStarsAreEditable()) {
+                                rate(rating);
+                            }
+                        }}
+                    />
+                ) : (
+                    <Typography variant='small'>
                         <span className='font-bold'>No Ratings</span>
-                    )}
-                </Typography>
-                <Typography variant='small' color='gray' className='flex gap-1'>
-                    <i className='fas fa-map-marker-alt fa-sm mt-1' />
+                    </Typography>
+                )}
+                <Typography
+                    variant='small'
+                    color={getStatusColor(data.status)}
+                    className='flex gap-1'
+                >
+                    <i className='fas fa-map-marker-alt fa-sm mt-1 text-gray-700' />
                     {data.status}
                 </Typography>
             </CardFooter>

@@ -1,19 +1,19 @@
 import React from 'react';
 import { Route, DefaultGenerics, Outlet } from '@tanstack/react-location';
-import Login from '@/pages/Buyer/Login';
-import Dashboard from '@/pages/Buyer/Dashboard';
-import Ponds from '@/pages/Buyer/Ponds';
-import Pond from '@/pages/Buyer/Pond';
+import Login from '@/pages/Seller/Login';
+import Dashboard from '@/pages/Seller/Dashboard';
+import Ponds from '@/pages/Seller/Ponds';
+import Pond from '@/pages/Seller/Pond';
 import Settings from '@/components/Settings';
 import { Modes } from '@/constants';
-import Register from '@/pages/Buyer/Register';
+import Register from '@/pages/Seller/Register';
 import Send from '@/components/Auth/ForgotPassword/Send';
 import Verify from '@/components/Auth/ForgotPassword/Verify';
 import Finalize from '@/components/Auth/ForgotPassword/Finalize';
-import IssueForm from '@/pages/Buyer/IssueForm';
+import PondForm from '@/pages/Seller/PondForm';
 
-export const buyerRoutes: Route<DefaultGenerics> = {
-    path: 'buyer',
+export const sellerRoutes: Route<DefaultGenerics> = {
+    path: 'seller',
     element: <Outlet />,
     children: [
         {
@@ -30,15 +30,15 @@ export const buyerRoutes: Route<DefaultGenerics> = {
             children: [
                 {
                     path: '/',
-                    element: <Send mode={Modes.BUYER} />,
+                    element: <Send mode={Modes.SELLER} />,
                 },
                 {
                     path: 'verify',
-                    element: <Verify mode={Modes.BUYER} />,
+                    element: <Verify mode={Modes.SELLER} />,
                 },
                 {
                     path: 'finalize',
-                    element: <Finalize mode={Modes.BUYER} />,
+                    element: <Finalize mode={Modes.SELLER} />,
                 },
             ],
         },
@@ -52,11 +52,15 @@ export const buyerRoutes: Route<DefaultGenerics> = {
                 },
                 {
                     path: 'settings',
-                    element: <Settings mode={Modes.BUYER} />,
+                    element: <Settings mode={Modes.SELLER} />,
                 },
                 {
-                    path: ':id/report',
-                    element: <IssueForm />,
+                    path: 'add',
+                    element: <PondForm mode='add' />,
+                },
+                {
+                    path: ':id/edit',
+                    element: <PondForm mode='edit' />,
                 },
                 {
                     path: ':id',

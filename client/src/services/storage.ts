@@ -1,14 +1,10 @@
 import { State } from '@avidian/state';
-import { CookieStorage } from 'cookie-storage';
-import dayjs from 'dayjs';
 
 export class StorageService extends State {
     protected static instance: State;
 
     constructor() {
-        const storage = new CookieStorage({
-            expires: dayjs().add(1, 'month').toDate(),
-        });
+        const storage = localStorage;
 
         super({
             storage,

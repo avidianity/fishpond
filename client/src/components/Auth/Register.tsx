@@ -27,7 +27,7 @@ const Register: FC<Props> = ({ mode, onSubmit }) => {
             await onSubmit(payload);
 
             toast.success(
-                `Registered successfully! Check your email to verify your account.`
+                'Registered successfully! Check your email to verify your account.'
             );
 
             navigate({

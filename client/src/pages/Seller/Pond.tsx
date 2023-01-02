@@ -1,4 +1,4 @@
-import { usePond } from '@/hooks/api/buyer/pond';
+import { usePond } from '@/hooks/api/seller/pond';
 import { useMatch, useNavigate } from '@tanstack/react-location';
 import React, { FC } from 'react';
 import BasePond from '@/components/Pond';
@@ -20,25 +20,25 @@ const Pond: FC = () => {
             <div className='flex mb-12'>
                 <Button
                     type='button'
-                    color='red'
+                    color='yellow'
                     onClick={(e) => {
                         e.preventDefault();
-                        navigate({ to: `/buyer/dashboard/${pond.id}/report` });
+                        navigate({ to: `/seller/dashboard/${pond.id}/edit` });
                     }}
                     className='ml-auto'
                 >
-                    Report
+                    Edit Pond
                 </Button>
             </div>
             <BasePond
                 data={pond}
-                mode={Modes.BUYER}
+                mode={Modes.SELLER}
                 headerClassName='relative h-40'
             />
             <Comments
                 comments={pond.comments ?? []}
                 id={match.params.id}
-                mode={Modes.BUYER}
+                mode={Modes.SELLER}
             />
         </>
     );

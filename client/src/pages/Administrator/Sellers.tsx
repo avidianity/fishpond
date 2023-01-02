@@ -22,7 +22,7 @@ const Sellers: FC = () => {
             return;
         }
 
-        await mutation.mutateAsync(id);
+        mutation.mutate(id);
     };
 
     const data = sellers.map((item) => ({

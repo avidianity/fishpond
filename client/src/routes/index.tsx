@@ -3,6 +3,7 @@ import { DefaultGenerics, Navigate, Route } from '@tanstack/react-location';
 import Home from '@/pages/Home';
 import { administratorRoutes } from '@/routes/administrator';
 import { buyerRoutes } from '@/routes/buyer';
+import { sellerRoutes } from '@/routes/seller';
 
 export const routes: Route<DefaultGenerics>[] = [
     {
@@ -11,6 +12,7 @@ export const routes: Route<DefaultGenerics>[] = [
     },
     administratorRoutes,
     buyerRoutes,
+    sellerRoutes,
     {
         element: <Navigate to='/' replace />,
     },

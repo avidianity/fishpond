@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import swal from 'sweetalert';
 import { Rating } from '@/types/models/rating';
 import { StorageService } from '@/services/storage';
-import { Modes } from '@/types/misc';
+import { Modes, PondStatus } from '@/types/misc';
 
 export function createTokenHeader(token: string) {
     return {
@@ -92,5 +93,16 @@ export function convertModePrefix(mode: Modes) {
             return 'client';
         case 'seller':
             return 'owner';
+    }
+}
+
+export function getStatusColor(status: PondStatus) {
+    switch (status) {
+        case 'Available':
+            return 'green';
+        case 'On Hold':
+            return 'amber';
+        case 'Sold':
+            return 'red';
     }
 }
