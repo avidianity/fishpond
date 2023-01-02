@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\V1\Client\ForgotPassword;
 
-use App\Models\Client;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class SendRequest extends FormRequest
 {
@@ -26,7 +24,7 @@ class SendRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => ['required', 'email', 'max:255', Rule::exists(Client::class)],
+            'email' => ['required', 'email', 'max:255'],
         ];
     }
 }

@@ -13,12 +13,13 @@ Route::prefix('auth')->as('auth.')->controller(AuthController::class)->group(fun
     Route::middleware('auth:clients')->group(function () {
         Route::get('check', 'check')->as('check');
         Route::get('logout', 'logout')->as('logout');
+        Route::post('update', 'update')->as('update');
+    });
 
-        Route::prefix('forgot-password')->controller(ForgotPasswordController::class)->group(function () {
-            Route::post('send', 'send')->as('send');
-            Route::post('verify', 'verify')->as('verify');
-            Route::post('finalize', 'finalize')->as('finalize');
-        });
+    Route::prefix('forgot-password')->controller(ForgotPasswordController::class)->group(function () {
+        Route::post('send', 'send')->as('send');
+        Route::post('verify', 'verify')->as('verify');
+        Route::post('finalize', 'finalize')->as('finalize');
     });
 });
 Route::middleware('auth:clients')->group(function () {

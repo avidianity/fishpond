@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\V1\Client\Pond;
+namespace App\Http\Requests\V1\Administrator\Auth;
 
-use App\Models\Pond;
+use App\Models\Administrator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class RateRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,11 @@ class RateRequest extends FormRequest
      */
     public function rules()
     {
+        $administrator = $this->administrator();
+
         return [
-            'pond_id' => ['required', 'uuid', Rule::exists(Pond::class, 'id')],
-            'value' => ['required', 'numeric', 'min:0', 'max:5'],
+            'email' => ['nullable', 'email', Rule::unique(Administrator::class)->ignoreModel($administrator)],
+            'password' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

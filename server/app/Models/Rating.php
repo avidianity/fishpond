@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Avidianity\LaravelExtras\Casts\FloatCast;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,10 @@ class Rating extends Model
     protected $fillable = [
         'value',
         'client_id',
+    ];
+
+    protected $casts = [
+        'value' => FloatCast::class,
     ];
 
     public function client()

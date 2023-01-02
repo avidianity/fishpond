@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Administrator;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Administrator\Auth\LoginRequest;
+use App\Http\Requests\V1\Administrator\Auth\UpdateRequest;
 use App\Http\Resources\Administrator\AdministratorResource;
 use Illuminate\Http\Response;
 use PHPOpenSourceSaver\JWTAuth\JWTGuard;
@@ -48,5 +49,14 @@ class AuthController extends Controller
         $this->guard->logout(true);
 
         return response('', Response::HTTP_NO_CONTENT);
+    }
+
+    public function update(UpdateRequest $request)
+    {
+        $administrator = $request->administrator();
+
+        $administrator->update($request->validated());
+
+        return AdministratorResource::make($administrator);
     }
 }

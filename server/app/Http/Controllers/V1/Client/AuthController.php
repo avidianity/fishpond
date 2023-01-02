@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Client\Auth\LoginRequest;
 use App\Http\Requests\V1\Client\Auth\RegisterRequest;
+use App\Http\Requests\V1\Client\Auth\UpdateRequest;
 use App\Http\Resources\Client\ClientResource;
 use App\Models\Client;
 use Illuminate\Auth\Events\Registered;
@@ -70,5 +71,14 @@ class AuthController extends Controller
         $this->guard->logout(true);
 
         return response('', Response::HTTP_NO_CONTENT);
+    }
+
+    public function update(UpdateRequest $request)
+    {
+        $client = $request->client();
+
+        $client->update($request->validated());
+
+        return ClientResource::make($client);
     }
 }

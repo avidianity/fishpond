@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->foreignIdFor(Client::class)->constrained()->cascadeOnDelete();
             $table->morphs('rateable');
-            $table->tinyInteger('value');
+            $table->unsignedFloat('value');
 
             $table->timestamps();
         });

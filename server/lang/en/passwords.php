@@ -18,5 +18,7 @@ return [
     'throttled' => 'Please wait before retrying.',
     'token' => 'This password reset token is invalid.',
     'user' => "We can't find a user with that email address.",
-
+    'otp' => 'The provided OTP (One-Time-Password) is invalid.',
+    'verification' => 'The Verification ID is invalid.',
+    'expired' => 'The provided OTP (One-Time-Password) is expired.',
 ];

@@ -20,7 +20,7 @@ trait HasRatings
         return $this->morphMany(Rating::class, 'rateable');
     }
 
-    public function rate(Client $client, int $value): Rating
+    public function rate(Client $client, int|float $value): Rating
     {
         return $this->ratings()->updateOrCreate(['client_id' => $client->getKey()], ['value' => $value]);
     }

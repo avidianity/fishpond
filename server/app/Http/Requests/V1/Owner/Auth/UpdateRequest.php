@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Requests\V1\Client\Pond;
+namespace App\Http\Requests\V1\Owner\Auth;
 
-use App\Models\Pond;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class RateRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +24,9 @@ class RateRequest extends FormRequest
     public function rules()
     {
         return [
-            'pond_id' => ['required', 'uuid', Rule::exists(Pond::class, 'id')],
-            'value' => ['required', 'numeric', 'min:0', 'max:5'],
+            'first_name' => ['nullable', 'string', 'max:255'],
+            'last_name' => ['nullable', 'string', 'max:255'],
+            'password' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1\Owner;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Owner\Auth\LoginRequest;
 use App\Http\Requests\V1\Owner\Auth\RegisterRequest;
+use App\Http\Requests\V1\Owner\Auth\UpdateRequest;
 use App\Http\Resources\Owner\OwnerResource;
 use App\Models\Owner;
 use Illuminate\Auth\Events\Registered;
@@ -60,5 +61,14 @@ class AuthController extends Controller
         $this->guard->logout(true);
 
         return response('', Response::HTTP_NO_CONTENT);
+    }
+
+    public function update(UpdateRequest $request)
+    {
+        $owner = $request->owner();
+
+        $owner->update($request->validated());
+
+        return OwnerResource::make($owner);
     }
 }

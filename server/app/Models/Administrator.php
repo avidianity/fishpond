@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\Password;
 use App\Contracts\CanComment as CanCommentContract;
 use App\Traits\CanComment;
+use App\Traits\HasOtps;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,6 +21,7 @@ class Administrator extends Authenticatable implements JWTSubject, CanCommentCon
     use HasUuids;
     use Notifiable;
     use CanComment;
+    use HasOtps;
 
     protected $fillable = [
         'email',

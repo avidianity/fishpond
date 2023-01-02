@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\Password;
 use App\Contracts\CanComment as CanCommentContract;
 use App\Traits\CanComment;
+use App\Traits\HasOtps;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +23,7 @@ class Owner extends Authenticatable implements JWTSubject, MustVerifyEmail, CanC
     use HasUuids;
     use Notifiable;
     use CanComment;
+    use HasOtps;
 
     protected $fillable = [
         'first_name',
