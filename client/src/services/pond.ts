@@ -3,6 +3,7 @@ import type { Modes, Response } from '@/types/misc';
 import { Sender } from '@/types/models/sender';
 import { Comment } from '@/types/models/comment';
 import type { Pond } from '@/types/models/pond';
+import { convertModePrefix } from '@/helpers';
 
 export class PondService {
     protected static instance: PondService;
@@ -21,8 +22,10 @@ export class PondService {
     }
 
     public async comment(mode: Modes, id: string, message: string) {
+        const prefix = convertModePrefix(mode);
+
         const { data } = await this.http.post<Response<Comment<Sender, Pond>>>(
-            `/v1/${mode}/ponds/comment`,
+            `/v1/${prefix}/ponds/comment`,
             { message, pond_id: id }
         );
 

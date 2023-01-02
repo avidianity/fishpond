@@ -4,51 +4,34 @@ import { Link, useNavigate } from '@tanstack/react-location';
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import MaterialIcon from '@/components/MaterialIcon';
-import { Modes } from '@/constants';
 import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
-import { useService } from '@/hooks';
-import { StorageService } from '@/services/storage';
-import { AuthResponse } from '@/types/responses/auth';
+import type { Register } from '@/types/requests/register';
 
-type Inputs = {
-    email: string;
-    password: string;
-};
+type Inputs = Register;
 
 type Props = {
-    mode: Mode;
-    onSubmit: (payload: Inputs) => Promise<AuthResponse>;
+    mode: Omit<Mode, 'administrator'>;
+    onSubmit: (payload: Inputs) => Promise<void>;
 };
 
-const Login: FC<Props> = ({ mode, onSubmit }) => {
+const Register: FC<Props> = ({ mode, onSubmit }) => {
     const [processing, setProcessing] = useState(false);
     const { register, handleSubmit } = useForm<Inputs>();
     const navigate = useNavigate();
-    const storage = useService(StorageService);
 
     const submit = handleSubmit(async (payload) => {
         setProcessing(true);
 
         try {
-            const response = await onSubmit(payload);
+            await onSubmit(payload);
 
-            storage.set('id', response.data.id);
-            storage.set('token', response.access.token);
-            storage.set('type', response.type);
-            storage.set('user', response.data);
+            toast.success(
+                `Registered successfully! Check your email to verify your account.`
+            );
 
-            let userName = '';
-
-            if (response.type === Modes.ADMINISTRATOR) {
-                userName = response.data.email;
-            } else {
-                userName = `${response.data.first_name} ${response.data.last_name}`;
-            }
-
-            toast.success(`Welcome back, ${userName}!`);
             navigate({
-                to: `/${mode}/dashboard/`,
+                to: `/${mode}/login`,
                 replace: true,
             });
         } catch (error) {
@@ -73,6 +56,22 @@ const Login: FC<Props> = ({ mode, onSubmit }) => {
                 <form className='mt-5' onSubmit={submit}>
                     <div className='my-4'>
                         <Input
+                            type='text'
+                            label='First Name'
+                            {...register('first_name')}
+                            disabled={processing}
+                        />
+                    </div>
+                    <div className='my-4'>
+                        <Input
+                            type='text'
+                            label='Last Name'
+                            {...register('last_name')}
+                            disabled={processing}
+                        />
+                    </div>
+                    <div className='my-4'>
+                        <Input
                             type='email'
                             label='Email'
                             {...register('email')}
@@ -86,12 +85,6 @@ const Login: FC<Props> = ({ mode, onSubmit }) => {
                             {...register('password')}
                             disabled={processing}
                         />
-                        <Link
-                            to={`/${mode}/forgot-password`}
-                            className='text-blue-500 hover:underline text-sm text-left mt-2 block'
-                        >
-                            Forgot Password?
-                        </Link>
                     </div>
                     <div className='mb-4'>
                         <Button
@@ -100,22 +93,20 @@ const Login: FC<Props> = ({ mode, onSubmit }) => {
                             disabled={processing}
                         >
                             {!processing ? (
-                                'Sign In'
+                                'Sign Up'
                             ) : (
                                 <MaterialIcon icon='pending' size={20} />
                             )}
                         </Button>
-                        {mode !== 'administrator' ? (
-                            <p className='text-sm text-gray-500 mt-2 text-left'>
-                                Don&apos;t have an account?{' '}
-                                <Link
-                                    to={`/${mode}/register`}
-                                    className='text-blue-500 hover:underline'
-                                >
-                                    Register
-                                </Link>
-                            </p>
-                        ) : null}
+                        <p className='text-sm text-gray-500 mt-2 text-left'>
+                            Already have an account?{' '}
+                            <Link
+                                to={`/${mode}/login`}
+                                className='text-blue-500 hover:underline'
+                            >
+                                Login
+                            </Link>
+                        </p>
                     </div>
                 </form>
             </div>
@@ -123,4 +114,4 @@ const Login: FC<Props> = ({ mode, onSubmit }) => {
     );
 };
 
-export default Login;
+export default Register;

@@ -30,7 +30,7 @@ export type Image = {
 export type TableColumns<T extends Record<string, any> = {}> =
     MRT_ColumnDef<T>[];
 
-export type Response<T> = {
+export type Response<T = any> = {
     data: T;
 };
 

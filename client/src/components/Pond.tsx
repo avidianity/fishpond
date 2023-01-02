@@ -1,5 +1,6 @@
 import { calculateRatings } from '@/helpers';
 import { useService } from '@/hooks';
+import { usePondRate } from '@/hooks/api/buyer/pond';
 import { StorageService } from '@/services/storage';
 import { Modes } from '@/types/misc';
 import type { Pond as Model } from '@/types/models/pond';
@@ -31,6 +32,11 @@ const Pond: FC<Props> = ({
     bodyClassName,
 }) => {
     const storage = useService(StorageService);
+    const mutation = usePondRate(data.id);
+
+    const rate = async (rating: number) => {
+        await mutation.mutateAsync(rating);
+    };
 
     const determineIfStarsAreEditable = () => {
         const type = storage.get<Modes>('type');
@@ -75,13 +81,18 @@ const Pond: FC<Props> = ({
                         <ReactStars
                             value={calculateRatings(data.ratings)}
                             edit={determineIfStarsAreEditable()}
+                            onChange={(rating) => {
+                                if (determineIfStarsAreEditable()) {
+                                    rate(rating);
+                                }
+                            }}
                         />
                     ) : (
                         <span className='font-bold'>No Ratings</span>
                     )}
                 </Typography>
                 <Typography variant='small' color='gray' className='flex gap-1'>
-                    <i className='fas fa-map-marker-alt fa-sm mt-[3px]' />
+                    <i className='fas fa-map-marker-alt fa-sm mt-1' />
                     {data.status}
                 </Typography>
             </CardFooter>

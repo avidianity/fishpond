@@ -1,5 +1,7 @@
 import swal from 'sweetalert';
 import { Rating } from '@/types/models/rating';
+import { StorageService } from '@/services/storage';
+import { Modes } from '@/types/misc';
 
 export function createTokenHeader(token: string) {
     return {
@@ -56,17 +58,39 @@ export function toBool(data: unknown) {
 }
 
 export function calculateRatings(ratings: Rating[]) {
+    const storage = StorageService.getInstance();
+
+    const id = storage.get<string>('id');
+    const type = storage.get<Modes>('type');
+
+    if (type === 'buyer') {
+        const selfRating = ratings.find((rating) => rating.client_id === id);
+
+        if (selfRating) {
+            return selfRating.value;
+        }
+    }
+
     if (ratings.length === 0) {
         return 0;
     }
 
     const stars = ratings.map((rating) => rating.value);
 
-    const value = stars.reduce((a, b) => a + b, 0) / stars.length;
-
-    return Number.isInteger(value) ? value : Number(value.toFixed(1));
+    return stars.reduce((a, b) => a + b, 0) / stars.length;
 }
 
-export function call<T extends () => void>(callback: T) {
+export function call<T extends Function>(callback: T) {
     return callback();
+}
+
+export function convertModePrefix(mode: Modes) {
+    switch (mode) {
+        case 'administrator':
+            return mode;
+        case 'buyer':
+            return 'client';
+        case 'seller':
+            return 'owner';
+    }
 }

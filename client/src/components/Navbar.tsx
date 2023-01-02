@@ -43,7 +43,7 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
         toast.info('You have logged out.');
 
         navigate({
-            to: `/${mode}/login`,
+            to: '/',
             replace: true,
         });
     };
@@ -99,7 +99,6 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
                 <MenuItem
                     onClick={(e) => {
                         e.preventDefault();
-                        return;
                         go(`/${mode}/dashboard/settings`);
                     }}
                 >

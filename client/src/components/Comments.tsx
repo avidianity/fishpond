@@ -14,6 +14,8 @@ import dayjs from 'dayjs';
 import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import MaterialIcon from '@/components/MaterialIcon';
+import { useService } from '@/hooks';
+import { StorageService } from '@/services/storage';
 
 type Input = {
     message: string;
@@ -28,6 +30,8 @@ type Props = {
 const Comments: FC<Props> = ({ mode, comments, id }) => {
     const { register, handleSubmit, reset } = useForm<Input>();
     const mutation = usePondComment(mode, id);
+    const storage = useService(StorageService);
+    const authId = storage.get('id');
 
     const submit = handleSubmit(async (payload) => {
         await mutation.mutateAsync(payload.message);
@@ -65,9 +69,12 @@ const Comments: FC<Props> = ({ mode, comments, id }) => {
                     >
                         <div className='flex mb-4'>
                             <span className='font-bold'>
-                                {getName(comment.sender, comment.sender_type)}
+                                {getName(comment.sender, comment.sender_type)}{' '}
+                                {comment.sender.id === authId ? (
+                                    <span>(Me)</span>
+                                ) : null}
                             </span>
-                            <span className='ml-14'>
+                            <span className='ml-auto'>
                                 {dayjs(comment.updated_at).fromNow()}
                             </span>
                         </div>
