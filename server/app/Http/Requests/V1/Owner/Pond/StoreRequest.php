@@ -28,6 +28,10 @@ class StoreRequest extends FormRequest
             'status' => ['required', 'string', 'max:255'],
             'image_url' => ['required', 'url', 'max:255'],
             'description' => ['nullable', 'string'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['nullable', 'url'],
+            'latitude' => ['nullable', 'numeric'],
+            'longitude' => ['nullable', 'numeric'],
         ];
     }
 }

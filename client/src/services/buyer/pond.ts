@@ -1,5 +1,5 @@
 import { HttpService } from '@/services/http';
-import type { Response } from '@/types/misc';
+import type { Params, Response } from '@/types/misc';
 import { Sender } from '@/types/models/sender';
 import { Comment } from '@/types/models/comment';
 import type { Pond } from '@/types/models/pond';
@@ -22,9 +22,10 @@ export class PondService {
         return PondService.instance;
     }
 
-    public async all() {
+    public async all(params?: Params) {
         const { data } = await this.http.get<Response<Pond[]>>(
-            '/v1/client/ponds'
+            '/v1/clients/ponds',
+            { params }
         );
 
         return data.data;

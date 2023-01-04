@@ -1,17 +1,40 @@
 import Pond from '@/components/Pond';
 import { Modes } from '@/constants';
 import { usePondList } from '@/hooks/api/seller/pond';
-import { Button } from '@material-tailwind/react';
+import { Nullable } from '@/types/misc';
+import { Button, Input } from '@material-tailwind/react';
 import { useNavigate } from '@tanstack/react-location';
-import React, { FC } from 'react';
+import { debounce } from 'lodash-es';
+import React, { FC, useState } from 'react';
 
 const Ponds: FC = () => {
-    const ponds = usePondList();
     const navigate = useNavigate();
+    const [keyword, setKeyword] = useState<Nullable<string>>();
+    const ponds = usePondList(keyword);
+
+    const search = debounce((keyword: string) => {
+        if (keyword.length >= 2) {
+            setKeyword(keyword);
+        } else {
+            setKeyword(null);
+        }
+    }, 750);
 
     return (
         <>
             <div className='flex mb-4'>
+                <div className='flex flex-wrap'>
+                    <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4'>
+                        <Input
+                            type='search'
+                            label='Search'
+                            onChange={(e) => {
+                                e.preventDefault();
+                                search(e.target.value);
+                            }}
+                        />
+                    </div>
+                </div>
                 <Button
                     type='button'
                     color='blue-gray'

@@ -10,6 +10,9 @@ export interface Pond {
     status: PondStatus;
     image: Image;
     description: string;
+    images?: string[];
+    latitude?: number;
+    longitude?: number;
     owner: Nullable<Seller>;
     comments: Nullable<Comment<Sender, Pond>[]>;
     ratings: Nullable<Rating[]>;

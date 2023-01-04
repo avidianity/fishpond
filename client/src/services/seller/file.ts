@@ -25,7 +25,8 @@ export class FileService {
 
         const { data } = await this.http.post<Response<FileModel>>(
             '/v1/owner/files',
-            payload
+            payload,
+            { headers: { Accept: 'application/json' } }
         );
 
         return data;

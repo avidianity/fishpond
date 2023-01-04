@@ -21,7 +21,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('status');
             $table->string('image_url');
+            $table->json('images')->nullable();
             $table->text('description')->nullable();
+            $table->decimal('latitude')->nullable();
+            $table->decimal('longitude')->nullable();
 
             $table->timestamps();
         });

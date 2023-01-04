@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\V1\Administrator\AuthController;
 use App\Http\Controllers\V1\Administrator\ClientController;
+use App\Http\Controllers\V1\Administrator\ConversationController;
 use App\Http\Controllers\V1\Administrator\ForgotPasswordController;
 use App\Http\Controllers\V1\Administrator\IssueController;
 use App\Http\Controllers\V1\Administrator\OwnersController;
@@ -34,4 +35,6 @@ Route::middleware('auth:administrators')->group(function () {
     ]);
 
     Route::apiResource('issues', IssueController::class)->only(['index', 'show']);
+
+    Route::apiResource('conversations', ConversationController::class)->except(['update', 'destroy']);
 });

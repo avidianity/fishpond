@@ -1,6 +1,6 @@
 import { useService } from '@/hooks';
 import { PondService } from '@/services/seller/pond';
-import { FormMode } from '@/types/misc';
+import { FormMode, Nullable } from '@/types/misc';
 import { PondPayload } from '@/types/payloads/pond';
 import { useMatch } from '@tanstack/react-location';
 import { isAxiosError } from 'axios';
@@ -9,9 +9,11 @@ import { toast } from 'react-toastify';
 
 const listKey = ['seller.ponds'];
 
-export function usePondList() {
+export function usePondList(keyword?: Nullable<string>) {
     const pondService = useService(PondService);
-    const { data } = useQuery(listKey, () => pondService.all());
+    const { data } = useQuery(keyword ? [...listKey, keyword] : listKey, () =>
+        pondService.all({ keyword })
+    );
 
     return data ?? [];
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\V1\Owner\AuthController;
+use App\Http\Controllers\V1\Owner\ConversationController;
 use App\Http\Controllers\V1\Owner\FileController;
 use App\Http\Controllers\V1\Owner\ForgotPasswordController;
 use App\Http\Controllers\V1\Owner\PondController;
@@ -30,4 +31,6 @@ Route::middleware('auth:owners')->group(function () {
     Route::apiResources([
         'ponds' => PondController::class,
     ]);
+
+    Route::apiResource('conversations', ConversationController::class)->except(['update', 'destroy']);
 });

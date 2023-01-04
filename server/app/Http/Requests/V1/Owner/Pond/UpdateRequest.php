@@ -28,6 +28,10 @@ class UpdateRequest extends FormRequest
             'status' => ['nullable', 'string', 'max:255'],
             'image_url' => ['nullable', 'url', 'max:255'],
             'description' => ['nullable', 'string'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['nullable', 'url'],
+            'latitude' => ['nullable', 'numeric'],
+            'longitude' => ['nullable', 'numeric'],
         ];
     }
 }

@@ -43,3 +43,5 @@ export type Valid = any;
 export type User = Administrator | Buyer | Seller;
 
 export type FormMode = 'add' | 'edit';
+
+export type Params = Record<string, Valid>;

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\V1\Client\AuthController;
+use App\Http\Controllers\V1\Client\ConversationController;
 use App\Http\Controllers\V1\Client\ForgotPasswordController;
 use App\Http\Controllers\V1\Client\IssueController;
 use App\Http\Controllers\V1\Client\PondController;
@@ -27,4 +28,6 @@ Route::middleware('auth:clients')->group(function () {
     Route::post('ponds/comment', [PondController::class, 'comment'])->name('ponds.comment');
     Route::apiResource('ponds', PondController::class)->only(['index', 'show']);
     Route::apiResource('issues', IssueController::class)->only('store');
+
+    Route::apiResource('conversations', ConversationController::class)->except(['update', 'destroy']);
 });

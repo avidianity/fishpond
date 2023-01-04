@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Client\Pond\CommentRequest;
+use App\Http\Requests\V1\Client\Pond\GetRequest;
 use App\Http\Requests\V1\Client\Pond\RateRequest;
 use App\Http\Resources\Client\PondResource;
 use App\Http\Resources\CommentResource;
@@ -24,10 +25,17 @@ class PondController extends Controller
         ];
     }
 
-    public function index()
+    public function index(GetRequest $request)
     {
-        $ponds = Pond::query()
-            ->with($this->relationships)
+        $builder = Pond::query();
+
+        if ($request->has('keyword')) {
+            $ponds = Pond::search($request->validated('keyword'))->get();
+
+            $builder->whereIn('id', $ponds->map->getKey()->toArray());
+        }
+
+        $ponds = $builder->with($this->relationships)
             ->get();
 
         return PondResource::collection($ponds);

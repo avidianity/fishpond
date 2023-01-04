@@ -15,6 +15,7 @@ import { Divider } from '@mui/material';
 import { Link } from '@tanstack/react-location';
 import React, { FC } from 'react';
 import ReactStars from 'react-stars';
+import PicturesModal from '@/components/Modals/Pictures';
 
 type Props = {
     mode: Modes;
@@ -73,6 +74,11 @@ const Pond: FC<Props> = ({
                 <Typography variant='small' className='mt-2'>
                     {data.description}
                 </Typography>
+                <div className='py-4'>
+                    {data.images && data.images.length > 0 ? (
+                        <PicturesModal pictures={data.images} />
+                    ) : null}
+                </div>
             </CardBody>
             <CardFooter
                 divider

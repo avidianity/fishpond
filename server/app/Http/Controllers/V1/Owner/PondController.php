@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Owner;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Owner\Pond\CommentRequest;
+use App\Http\Requests\V1\Owner\Pond\GetRequest;
 use App\Http\Requests\V1\Owner\Pond\StoreRequest;
 use App\Http\Requests\V1\Owner\Pond\UpdateRequest;
 use App\Http\Resources\CommentResource;
@@ -24,11 +25,18 @@ class PondController extends Controller
         ];
     }
 
-    public function index(Request $request)
+    public function index(GetRequest $request)
     {
-        $ponds = $request->owner()
-            ->ponds()
-            ->with($this->relationships)
+        $builder = $request->owner()
+            ->ponds();
+
+        if ($request->has('keyword')) {
+            $ponds = Pond::search($request->validated('keyword'))->get();
+
+            $builder->whereIn('id', $ponds->map->getKey()->toArray());
+        }
+
+        $ponds = $builder->with($this->relationships)
             ->get();
 
         return PondResource::collection($ponds);
