@@ -1,4 +1,4 @@
-import { FormMode } from '@/types/misc';
+import { FormMode, Valid } from '@/types/misc';
 import {
     Avatar,
     Button,
@@ -43,7 +43,7 @@ const PondForm: FC<Props> = ({ mode }) => {
 
     const submit = handleSubmit(async (payload) => {
         setProcessing(true);
-        payload.status = status;
+        payload.status = status as Valid;
         payload.image_url = preview;
         try {
             await mutation.mutateAsync(payload);
