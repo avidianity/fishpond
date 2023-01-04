@@ -24,7 +24,17 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         if ($token = $this->guard->attempt($request->validated())) {
+            /**
+             * @var \App\Models\Owner
+             */
             $owner = $this->guard->userOrFail();
+
+            if (!$owner->hasVerifiedEmail()) {
+                return response()->json([
+                    'key' => 'UNVERIFIED_EMAIL',
+                    'message' => __('auth.unverified'),
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             return OwnerResource::make($owner)->additional([
                 'type' => 'seller',
