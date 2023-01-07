@@ -124,12 +124,14 @@ class ConversationService
         return Conversation::query()
             ->with($this->relationships)
             ->where(function (Builder $query) use ($type, $user) {
-                return $query->where('sender_type', $type)
-                    ->where('sender_id', $user->getKey());
-            })
-            ->orWhere(function (Builder $query) use ($type, $user) {
-                return $query->where('receiver_type', $type)
-                    ->where('receiver_id', $user->getKey());
+                return $query->where(function (Builder $query) use ($type, $user) {
+                    return $query->where('sender_type', $type)
+                        ->where('sender_id', $user->getKey());
+                })
+                    ->orWhere(function (Builder $query) use ($type, $user) {
+                        return $query->where('receiver_type', $type)
+                            ->where('receiver_id', $user->getKey());
+                    });
             });
     }
 }
