@@ -18,21 +18,20 @@ const Home: FC = () => {
 
     return (
         <div className='flex items-center justify-center h-screen w-screen'>
-            <div className='px-10 py-14 text-center'>
+            <div className='px-14 py-20 text-center shadow-lg border border-gray-100 rounded-xl relative'>
                 <h4 className='text-4xl font-bold italic'>LookApond</h4>
                 <h6 className='text-lg mt-1'>Buy and Rent</h6>
                 <p className='mt-2 mb-6'>Choose a role before continuing</p>
                 <Button
                     color='blue'
                     variant='text'
-                    className='block my-4 underline fixed bottom-0 right-4'
+                    className='block my-4 underline absolute bottom-0 right-2'
                     onClick={createHandler('administrator/login')}
                 >
                     Administrator
                 </Button>
                 <Button
                     color='red'
-                    variant='text'
                     className='block my-4 w-full underline'
                     onClick={createHandler('seller/login')}
                 >
@@ -40,7 +39,6 @@ const Home: FC = () => {
                 </Button>
                 <Button
                     color='green'
-                    variant='text'
                     className='block my-4 w-full underline'
                     onClick={createHandler('buyer/login')}
                 >
