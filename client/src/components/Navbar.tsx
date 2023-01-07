@@ -130,7 +130,7 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
                     as='a'
                     href={`/${mode}/dashboard/`}
                     variant='small'
-                    className='mr-4 cursor-pointer py-1.5 font-normal'
+                    className='mr-4 cursor-pointer py-1.5 font-normal italic'
                 >
                     <span>LookApond</span>
                 </Typography>
