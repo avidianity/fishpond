@@ -19,7 +19,8 @@ const Home: FC = () => {
     return (
         <div className='flex items-center justify-center h-screen w-screen'>
             <div className='px-10 py-14 shadow-lg border border-gray-100 rounded-xl text-center'>
-                <h4 className='text-4xl font-bold'>Fishpond</h4>
+                <h4 className='text-4xl font-bold'>LookApond</h4>
+                <h6 className='text-lg mt-1'>Buy and Rent</h6>
                 <p className='mt-2 mb-6'>Choose a role before continuing</p>
                 <Button
                     color='blue'

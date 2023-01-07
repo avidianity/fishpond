@@ -11,6 +11,8 @@ import Send from '@/components/Auth/ForgotPassword/Send';
 import Verify from '@/components/Auth/ForgotPassword/Verify';
 import Finalize from '@/components/Auth/ForgotPassword/Finalize';
 import PondForm from '@/pages/Seller/PondForm';
+import Conversation from '@/pages/Seller/Conversation';
+import Conversations from '@/pages/Seller/Conversations';
 
 export const sellerRoutes: Route<DefaultGenerics> = {
     path: 'seller',
@@ -53,6 +55,14 @@ export const sellerRoutes: Route<DefaultGenerics> = {
                 {
                     path: 'settings',
                     element: <Settings mode={Modes.SELLER} />,
+                },
+                {
+                    path: 'conversations/:id',
+                    element: <Conversation />,
+                },
+                {
+                    path: 'conversations',
+                    element: <Conversations />,
                 },
                 {
                     path: 'add',

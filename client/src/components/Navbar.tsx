@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 
 type Link = {
     to: string;
-    title: string;
+    title: string | JSX.Element;
     exact?: boolean;
 };
 
@@ -132,7 +132,7 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
                     variant='small'
                     className='mr-4 cursor-pointer py-1.5 font-normal'
                 >
-                    <span>Fishpond</span>
+                    <span>LookApond</span>
                 </Typography>
                 <div className='hidden lg:block'>{navList}</div>
                 {menu(true)}

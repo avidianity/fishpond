@@ -24,7 +24,7 @@ export class PondService {
 
     public async all(params?: Params) {
         const { data } = await this.http.get<Response<Pond[]>>(
-            '/v1/clients/ponds',
+            '/v1/client/ponds',
             { params }
         );
 

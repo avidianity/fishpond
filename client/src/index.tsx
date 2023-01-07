@@ -10,6 +10,8 @@ import { ToastContainer } from 'react-toastify';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
+import '@avidian/extras';
+import 'line-awesome/dist/font-awesome-line-awesome/css/all.css';
 
 dayjs.extend(relativeTime);
 

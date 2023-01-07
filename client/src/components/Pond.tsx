@@ -1,8 +1,8 @@
-import { calculateRatings, getStatusColor } from '@/helpers';
+import { calculateRatings, convertModePrefix, getStatusColor } from '@/helpers';
 import { useService } from '@/hooks';
 import { usePondRate } from '@/hooks/api/buyer/pond';
 import { StorageService } from '@/services/storage';
-import { Modes } from '@/types/misc';
+import { Modes, Response } from '@/types/misc';
 import type { Pond as Model } from '@/types/models/pond';
 import {
     Card,
@@ -12,10 +12,15 @@ import {
     CardFooter,
 } from '@material-tailwind/react';
 import { Divider } from '@mui/material';
-import { Link } from '@tanstack/react-location';
+import { Link, useNavigate } from '@tanstack/react-location';
 import React, { FC } from 'react';
 import ReactStars from 'react-stars';
 import PicturesModal from '@/components/Modals/Pictures';
+import { Seller } from '@/types/models/seller';
+import { HttpService } from '@/services/http';
+import { Conversation } from '@/types/models/converstation';
+import { isAxiosError } from 'axios';
+import { toast } from 'react-toastify';
 
 type Props = {
     mode: Modes;
@@ -34,6 +39,9 @@ const Pond: FC<Props> = ({
 }) => {
     const storage = useService(StorageService);
     const mutation = usePondRate(data.id);
+    const http = useService(HttpService);
+    const prefix = convertModePrefix(mode);
+    const navigate = useNavigate();
 
     const rate = async (rating: number) => {
         mutation.mutate(rating);
@@ -43,6 +51,33 @@ const Pond: FC<Props> = ({
         const type = storage.get<Modes>('type');
 
         return type === 'buyer';
+    };
+
+    const converse = async (seller: Seller) => {
+        try {
+            const { data } = await http.post<Response<Conversation>>(
+                `/v1/${prefix}/conversations`,
+                {
+                    receiver_type: 'seller',
+                    receiver_id: seller.id,
+                }
+            );
+
+            const conversation = data.data;
+
+            navigate({
+                to: `/${mode}/dashboard/conversations/${conversation.id}`,
+            });
+        } catch (error) {
+            if (isAxiosError(error)) {
+                toast.error(error.response?.data?.message);
+            } else {
+                console.error(error);
+                toast.error(
+                    'Unable to initiate conversation. Please try again later.'
+                );
+            }
+        }
     };
 
     return (
@@ -66,8 +101,18 @@ const Pond: FC<Props> = ({
                 {data.owner ? (
                     <Typography variant='small' className='font-bold'>
                         {data.owner.first_name} {data.owner.last_name}
+                        <i
+                            className='fas fa-sms ml-1 hover:text-blue-300 hover:cursor-pointer'
+                            onClick={(e) => {
+                                e.preventDefault();
+                                if (data.owner) {
+                                    converse(data.owner);
+                                }
+                            }}
+                        />
                     </Typography>
                 ) : null}
+
                 <div className='pt-4 pb-2'>
                     <Divider />
                 </div>

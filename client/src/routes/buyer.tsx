@@ -11,6 +11,8 @@ import Send from '@/components/Auth/ForgotPassword/Send';
 import Verify from '@/components/Auth/ForgotPassword/Verify';
 import Finalize from '@/components/Auth/ForgotPassword/Finalize';
 import IssueForm from '@/pages/Buyer/IssueForm';
+import Conversations from '@/pages/Buyer/Conversations';
+import Conversation from '@/pages/Buyer/Conversation';
 
 export const buyerRoutes: Route<DefaultGenerics> = {
     path: 'buyer',
@@ -53,6 +55,14 @@ export const buyerRoutes: Route<DefaultGenerics> = {
                 {
                     path: 'settings',
                     element: <Settings mode={Modes.BUYER} />,
+                },
+                {
+                    path: 'conversations/:id',
+                    element: <Conversation />,
+                },
+                {
+                    path: 'conversations',
+                    element: <Conversations />,
                 },
                 {
                     path: ':id/report',

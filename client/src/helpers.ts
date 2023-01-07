@@ -96,6 +96,19 @@ export function convertModePrefix(mode: Modes) {
     }
 }
 
+export function convertPrefixToMode(
+    prefix: 'administrator' | 'client' | 'owner'
+) {
+    switch (prefix) {
+        case 'administrator':
+            return prefix;
+        case 'client':
+            return 'buyer';
+        case 'owner':
+            return 'seller';
+    }
+}
+
 export function getStatusColor(status: PondStatus) {
     switch (status) {
         case 'Available':

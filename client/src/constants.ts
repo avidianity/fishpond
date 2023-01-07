@@ -9,3 +9,8 @@ export const PondStatus = {
     SOLD: 'Sold',
     ON_HOLD: 'On Hold',
 } as const;
+
+export const MessageType = {
+    TEXT: 'text',
+    FILE: 'file',
+} as const;

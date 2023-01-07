@@ -1,4 +1,5 @@
 import Container from '@/components/Container';
+import MaterialIcon from '@/components/MaterialIcon';
 import Navbar from '@/components/Navbar';
 import { Modes } from '@/constants';
 import { useService } from '@/hooks';
@@ -25,6 +26,10 @@ const Dashboard: FC = () => {
                         to: '',
                         title: 'Ponds',
                         exact: true,
+                    },
+                    {
+                        to: 'conversations',
+                        title: <MaterialIcon icon='forum' />,
                     },
                 ]}
             />
