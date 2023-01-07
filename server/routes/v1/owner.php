@@ -32,5 +32,6 @@ Route::middleware('auth:owners')->group(function () {
         'ponds' => PondController::class,
     ]);
 
+    Route::post('conversations/send', [ConversationController::class, 'send'])->name('conversations.send');
     Route::apiResource('conversations', ConversationController::class)->except(['update', 'destroy']);
 });

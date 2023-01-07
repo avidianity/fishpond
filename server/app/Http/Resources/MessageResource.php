@@ -2,28 +2,32 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Administrator;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 
 /**
- * @mixin \App\Models\Conversation
+ * @mixin \App\Models\Message
  */
-class ConversationResource extends JsonResource
+class MessageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @re`turn array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {
         return [
-            'id' => $this->getKey(),
+            'conversation' => ConversationResource::make($this->whenLoaded('conversation')),
             'receiver' => $this->mapUser($this->receiver),
             'sender' => $this->mapUser($this->sender),
-            'messages' => MessageResource::collection($this->whenLoaded('messages')),
+            'metadata' => $this->metadata,
+            'type' => $this->type,
+            'message' => $this->message,
+            'timestamp' => $this->created_at,
         ];
     }
 

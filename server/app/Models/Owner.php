@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Scout\Searchable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 /**
@@ -24,6 +25,7 @@ class Owner extends Authenticatable implements JWTSubject, MustVerifyEmail, CanC
     use Notifiable;
     use CanComment;
     use HasOtps;
+    use Searchable;
 
     protected $fillable = [
         'first_name',
@@ -65,5 +67,14 @@ class Owner extends Authenticatable implements JWTSubject, MustVerifyEmail, CanC
     public function ponds(): HasMany
     {
         return $this->hasMany(Pond::class);
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'email' => $this->email,
+        ];
     }
 }

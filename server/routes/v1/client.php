@@ -29,5 +29,6 @@ Route::middleware('auth:clients')->group(function () {
     Route::apiResource('ponds', PondController::class)->only(['index', 'show']);
     Route::apiResource('issues', IssueController::class)->only('store');
 
+    Route::post('conversations/send', [ConversationController::class, 'send'])->name('conversations.send');
     Route::apiResource('conversations', ConversationController::class)->except(['update', 'destroy']);
 });

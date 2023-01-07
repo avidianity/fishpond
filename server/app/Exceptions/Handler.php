@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\PostTooLargeException;
 use Throwable;
@@ -50,5 +51,14 @@ class Handler extends ExceptionHandler
                 'message' => $e->getMessage(),
             ], $e->getStatusCode());
         });
+
+        $this->renderable(fn (ModelNotFoundException $e) => response()->json([
+            'key' => 'RESOURCE_MISSING',
+            'meta' => [
+                'type' => $e->getModel(),
+                'id' => $e->getIds(),
+            ],
+            'message' => $e->getMessage(),
+        ], 404));
     }
 }

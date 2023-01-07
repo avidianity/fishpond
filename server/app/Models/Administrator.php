@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Scout\Searchable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 /**
@@ -22,6 +23,7 @@ class Administrator extends Authenticatable implements JWTSubject, CanCommentCon
     use Notifiable;
     use CanComment;
     use HasOtps;
+    use Searchable;
 
     protected $fillable = [
         'email',
@@ -49,5 +51,12 @@ class Administrator extends Authenticatable implements JWTSubject, CanCommentCon
     public function getFullName(): string
     {
         return $this->email;
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'email' => $this->email,
+        ];
     }
 }

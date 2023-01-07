@@ -2,22 +2,40 @@
 
 namespace App\Services;
 
+use App\Enums\MessageType;
 use App\Models\Conversation;
+use App\Models\File;
+use App\Models\Message;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Http\UploadedFile;
 
 class ConversationService
 {
-    protected array $relationships = [];
+    protected array $relationships = [
+        'messages.sender',
+        'messages.receiver',
+    ];
 
     /**
-     * @param User $user
      * @return Collection<int, Conversation>
      */
     public function all(User $user): Collection
     {
         return $this->query($user)->get();
+    }
+
+    /**
+     * @return Collection<int, Conversation>
+     */
+    public function search(User $user, string $keyword): Collection
+    {
+        $matches = Conversation::search($keyword)->get();
+
+        return $this->query($user)
+            ->whereIn('id', $matches->map->getKey()->toArray())
+            ->get();
     }
 
     public function one(User $user, string $id): Conversation
@@ -27,11 +45,75 @@ class ConversationService
 
     public function make(User $sender, User $receiver): Conversation
     {
-        return Conversation::updateOrCreate([
-            'sender_id' => $sender->getKey(),
-            'sender_type' => get_class($sender),
+        $senderType = get_class($sender);
+        $receiverType = get_class($receiver);
+
+        $conversation = Conversation::query()
+            ->with($this->relationships)
+            ->where(function (Builder $query) use ($senderType, $sender) {
+                return $query->where(function (Builder $query) use ($senderType, $sender) {
+                    return $query->where('sender_type', $senderType)
+                        ->where('sender_id', $sender->getKey());
+                })->orWhere(function (Builder $query) use ($senderType, $sender) {
+                    return $query->where('receiver_type', $senderType)
+                        ->where('receiver_id', $sender->getKey());
+                });
+            })
+            ->where(function (Builder $query) use ($receiverType, $receiver) {
+                return $query->where(function (Builder $query) use ($receiverType, $receiver) {
+                    return $query->where('sender_type', $receiverType)
+                        ->where('sender_id', $receiver->getKey());
+                })->orWhere(function (Builder $query) use ($receiverType, $receiver) {
+                    return $query->where('receiver_type', $receiverType)
+                        ->where('receiver_id', $receiver->getKey());
+                });
+            })
+            ->first();
+
+        if ($conversation) {
+            return $conversation;
+        }
+
+        return Conversation::create([
+            'receiver_type' => $receiverType,
             'receiver_id' => $receiver->getKey(),
+            'sender_type' => $senderType,
+            'sender_id' => $sender->getKey(),
+        ]);
+    }
+
+    public function sendText(User $sender, User $receiver, string $message): Message
+    {
+        $conversation = $this->make($sender, $receiver);
+
+        return $conversation->messages()->create([
+            'type' => MessageType::TEXT,
+            'message' => $message,
             'receiver_type' => get_class($receiver),
+            'receiver_id' => $receiver->getKey(),
+            'sender_type' => get_class($sender),
+            'sender_id' => $sender->getKey(),
+        ]);
+    }
+
+    public function sendFile(User $sender, User $receiver, UploadedFile $uploadedFile): Message
+    {
+        $conversation = $this->make($sender, $receiver);
+
+        $file = File::process($uploadedFile);
+
+        return $conversation->messages()->create([
+            'type' => MessageType::FILE,
+            'message' => $file->url,
+            'metadata' => [
+                'type' => $file->type,
+                'name' => $file->name,
+                'size' => $file->size,
+            ],
+            'receiver_type' => get_class($receiver),
+            'receiver_id' => $receiver->getKey(),
+            'sender_type' => get_class($sender),
+            'sender_id' => $sender->getKey(),
         ]);
     }
 
@@ -45,7 +127,7 @@ class ConversationService
                 return $query->where('sender_type', $type)
                     ->where('sender_id', $user->getKey());
             })
-            ->where(function (Builder $query) use ($type, $user) {
+            ->orWhere(function (Builder $query) use ($type, $user) {
                 return $query->where('receiver_type', $type)
                     ->where('receiver_id', $user->getKey());
             });

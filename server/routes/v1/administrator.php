@@ -36,5 +36,6 @@ Route::middleware('auth:administrators')->group(function () {
 
     Route::apiResource('issues', IssueController::class)->only(['index', 'show']);
 
+    Route::post('conversations/send', [ConversationController::class, 'send'])->name('conversations.send');
     Route::apiResource('conversations', ConversationController::class)->except(['update', 'destroy']);
 });
