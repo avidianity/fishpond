@@ -7,6 +7,7 @@ use App\Http\Requests\V1\Administrator\Pond\CommentRequest;
 use App\Http\Requests\V1\Administrator\Pond\GetRequest;
 use App\Http\Resources\Administrator\PondResource;
 use App\Http\Resources\CommentResource;
+use App\Models\Comment;
 use App\Models\Pond;
 use Illuminate\Http\Request;
 
@@ -47,6 +48,13 @@ class PondController extends Controller
         return PondResource::make($pond);
     }
 
+    public function destroy(Request $request, Pond $pond)
+    {
+        $pond->delete();
+
+        return response()->noContent();
+    }
+
     public function comment(CommentRequest $request)
     {
         /**
@@ -57,5 +65,12 @@ class PondController extends Controller
         $comment = $pond->commentFrom($request->administrator(), $request->validated('message'));
 
         return CommentResource::make($comment);
+    }
+
+    public function deleteComment(Comment $comment)
+    {
+        $comment->delete();
+
+        return response()->noContent();
     }
 }

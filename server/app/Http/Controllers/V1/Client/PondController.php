@@ -9,6 +9,7 @@ use App\Http\Requests\V1\Client\Pond\RateRequest;
 use App\Http\Resources\Client\PondResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\RatingResource;
+use App\Models\Comment;
 use App\Models\Pond;
 
 class PondController extends Controller
@@ -70,5 +71,12 @@ class PondController extends Controller
         $rating = $pond->rate($request->client(), $request->validated('value'));
 
         return RatingResource::make($rating);
+    }
+
+    public function deleteComment(Comment $comment)
+    {
+        $comment->delete();
+
+        return response()->noContent();
     }
 }

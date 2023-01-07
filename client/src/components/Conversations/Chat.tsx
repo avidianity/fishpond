@@ -11,6 +11,8 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import SenderMessage from '@/components/Conversations/SenderMessage';
 import ReceiverMessage from '@/components/Conversations/ReceiverMessage';
+import SenderFile from '@/components/Conversations/SenderFile';
+import ReceiverFile from '@/components/Conversations/ReceiverFile';
 
 type Inputs = {
     message: string;
@@ -38,6 +40,7 @@ const Chat: FC<Props> = ({ mode, onMessage, onUpload, onClose }) => {
 
         try {
             await onUpload(file);
+            console.log(formRef.current);
             formRef.current?.reset();
         } catch (error) {
             if (isAxiosError(error)) {
@@ -139,7 +142,22 @@ const Chat: FC<Props> = ({ mode, onMessage, onUpload, onClose }) => {
                                         timestamp={message.timestamp}
                                     />
                                 )
-                            ) : null}
+                            ) : message.sender.id === id ? (
+                                <SenderFile
+                                    url={message.message}
+                                    timestamp={message.timestamp}
+                                    mimeType={message.metadata.type}
+                                    fileName={message.metadata.name}
+                                />
+                            ) : (
+                                <ReceiverFile
+                                    name={getName(message.sender)}
+                                    url={message.message}
+                                    timestamp={message.timestamp}
+                                    mimeType={message.metadata.type}
+                                    fileName={message.metadata.name}
+                                />
+                            )}
                         </Fragment>
                     ))}
                 </div>

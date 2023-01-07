@@ -31,4 +31,10 @@ export class PondService {
 
         return data;
     }
+
+    public async deleteComment(mode: Modes, id: string) {
+        const prefix = convertModePrefix(mode);
+
+        await this.http.delete(`/v1/${prefix}/ponds/comment/${id}`);
+    }
 }

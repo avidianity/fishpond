@@ -5,6 +5,7 @@ import { HttpService } from '@/services/http';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Conversation } from '@/types/models/converstation';
 import { Send } from '@/types/requests/conversation/send';
+import FormData from '@avidian/form-data';
 
 export function useConversationList(mode: Modes, keyword: Nullable<string>) {
     const prefix = convertModePrefix(mode);
@@ -53,7 +54,7 @@ export function useConversationSend(mode: Modes) {
         async (payload: Send) => {
             const { data } = await http.post<Response<Conversation>>(
                 url,
-                payload
+                new FormData(payload)
             );
 
             return data.data;

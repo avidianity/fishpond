@@ -23,3 +23,23 @@ export function usePondComment(mode: Modes, id: string) {
         },
     });
 }
+
+export function usePondCommentDelete(mode: Modes) {
+    const pondService = useService(PondService);
+    const client = useQueryClient();
+    const listKey = [`${mode}.ponds`];
+
+    const mutation = async (id: string) => {
+        await pondService.deleteComment(mode, id);
+    };
+
+    return useMutation(mutation, {
+        onSuccess: () => {
+            client.invalidateQueries([...listKey]);
+        },
+        onError: (error) => {
+            console.error(error);
+            toast.error('Unable to delete comment. Please try again later.');
+        },
+    });
+}

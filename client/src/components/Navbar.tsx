@@ -79,41 +79,53 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
     );
 
     const menu = (mobile: boolean) => (
-        <Menu>
-            <MenuHandler>
-                <Button
-                    color='blue'
-                    type='button'
-                    variant='gradient'
-                    size='sm'
-                    className={
-                        mobile
-                            ? 'hidden lg:inline-block'
-                            : 'inline-block lg:hidden'
-                    }
-                >
-                    <span>Menu</span>
-                </Button>
-            </MenuHandler>
-            <MenuList>
-                <MenuItem
-                    onClick={(e) => {
-                        e.preventDefault();
-                        go(`/${mode}/dashboard/settings`);
-                    }}
-                >
-                    Settings
-                </MenuItem>
-                <MenuItem
-                    onClick={(e) => {
-                        e.preventDefault();
-                        logout();
-                    }}
-                >
-                    Logout
-                </MenuItem>
-            </MenuList>
-        </Menu>
+        <div>
+            <IconButton
+                variant='text'
+                onClick={(e) => {
+                    e.preventDefault();
+                    navigate({ to: `/${mode}/dashboard/conversations` });
+                }}
+                className='mr-2'
+            >
+                <i className='fas fa-comment fa-2x'></i>
+            </IconButton>
+            <Menu>
+                <MenuHandler>
+                    <Button
+                        color='blue'
+                        type='button'
+                        variant='gradient'
+                        size='sm'
+                        className={
+                            mobile
+                                ? 'hidden lg:inline-block'
+                                : 'inline-block lg:hidden'
+                        }
+                    >
+                        <span>Menu</span>
+                    </Button>
+                </MenuHandler>
+                <MenuList>
+                    <MenuItem
+                        onClick={(e) => {
+                            e.preventDefault();
+                            go(`/${mode}/dashboard/settings`);
+                        }}
+                    >
+                        Settings
+                    </MenuItem>
+                    <MenuItem
+                        onClick={(e) => {
+                            e.preventDefault();
+                            logout();
+                        }}
+                    >
+                        Logout
+                    </MenuItem>
+                </MenuList>
+            </Menu>
+        </div>
     );
 
     useEffect(() => {

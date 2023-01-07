@@ -26,7 +26,7 @@ class Message extends Model
         'message',
     ];
 
-    protected $cast = [
+    protected $casts = [
         'metadata' => JsonCast::class,
         'type' => MessageType::class,
     ];

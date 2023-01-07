@@ -37,6 +37,10 @@ export class PondService {
         return data.data;
     }
 
+    public async destroy(id: string) {
+        await this.http.delete(`/v1/administrator/ponds/${id}`);
+    }
+
     public async comment(id: string, message: string) {
         const { data } = await this.http.post<Response<Comment<Sender, Pond>>>(
             '/v1/administrator/ponds/comment',

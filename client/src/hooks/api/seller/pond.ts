@@ -58,3 +58,27 @@ export function usePondMutation(mode: FormMode) {
         },
     });
 }
+
+export function usePondDelete() {
+    const client = useQueryClient();
+    const pondService = useService(PondService);
+
+    const mutation = async (id: string) => {
+        return await pondService.destroy(id);
+    };
+
+    return useMutation(mutation, {
+        onSuccess: () => {
+            client.invalidateQueries(listKey);
+            toast.success('Pond deleted successfully!');
+        },
+        onError: (error) => {
+            if (isAxiosError(error)) {
+                toast.error(error.response?.data?.message);
+            } else {
+                console.error(error);
+                toast.error('Unable to delete pond. Please try again later.');
+            }
+        },
+    });
+}

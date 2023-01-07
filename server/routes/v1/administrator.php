@@ -26,8 +26,9 @@ Route::prefix('auth')->as('auth.')->controller(AuthController::class)->group(fun
 });
 
 Route::middleware('auth:administrators')->group(function () {
+    Route::delete('ponds/comment/{comment}', [PondController::class, 'deleteComment'])->name('ponds.comment.destroy');
     Route::post('ponds/comment', [PondController::class, 'comment'])->name('ponds.comment');
-    Route::apiResource('ponds', PondController::class)->only(['index', 'show']);
+    Route::apiResource('ponds', PondController::class)->only(['index', 'show', 'destroy']);
 
     Route::apiResources([
         'owners' => OwnersController::class,

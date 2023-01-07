@@ -25,6 +25,7 @@ Route::prefix('auth')->as('auth.')->controller(AuthController::class)->group(fun
 });
 Route::middleware('auth:clients')->group(function () {
     Route::post('ponds/rate', [PondController::class, 'rate'])->name('ponds.rate');
+    Route::delete('ponds/comment/{comment}', [PondController::class, 'deleteComment'])->name('ponds.comment.destroy');
     Route::post('ponds/comment', [PondController::class, 'comment'])->name('ponds.comment');
     Route::apiResource('ponds', PondController::class)->only(['index', 'show']);
     Route::apiResource('issues', IssueController::class)->only('store');

@@ -1,7 +1,9 @@
 import { useService } from '@/hooks';
 import { PondService } from '@/services/administrator/pond';
 import { Nullable } from '@/types/misc';
-import { useQuery } from 'react-query';
+import { isAxiosError } from 'axios';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { toast } from 'react-toastify';
 
 const listKey = ['administrator.ponds'];
 
@@ -19,4 +21,28 @@ export function usePond(id: string) {
     const { data } = useQuery([...listKey, id], () => pondService.show(id));
 
     return data;
+}
+
+export function usePondDelete() {
+    const client = useQueryClient();
+    const pondService = useService(PondService);
+
+    const mutation = async (id: string) => {
+        return await pondService.destroy(id);
+    };
+
+    return useMutation(mutation, {
+        onSuccess: () => {
+            client.invalidateQueries(listKey);
+            toast.success('Pond deleted successfully!');
+        },
+        onError: (error) => {
+            if (isAxiosError(error)) {
+                toast.error(error.response?.data?.message);
+            } else {
+                console.error(error);
+                toast.error('Unable to delete pond. Please try again later.');
+            }
+        },
+    });
 }

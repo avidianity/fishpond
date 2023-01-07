@@ -9,6 +9,7 @@ use App\Http\Requests\V1\Owner\Pond\StoreRequest;
 use App\Http\Requests\V1\Owner\Pond\UpdateRequest;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\Owner\PondResource;
+use App\Models\Comment;
 use App\Models\Pond;
 use Illuminate\Http\Request;
 
@@ -96,5 +97,12 @@ class PondController extends Controller
         $comment = $pond->commentFrom($request->owner(), $request->validated('message'));
 
         return CommentResource::make($comment);
+    }
+
+    public function deleteComment(Comment $comment)
+    {
+        $comment->delete();
+
+        return response()->noContent();
     }
 }
