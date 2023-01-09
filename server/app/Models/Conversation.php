@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Laravel\Scout\Searchable;
 
+/**
+ * @mixin IdeHelperConversation
+ */
 class Conversation extends Model
 {
     use HasFactory;

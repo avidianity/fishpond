@@ -9,7 +9,9 @@ use App\Http\Resources\Administrator\PondResource;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Pond;
+use App\Notifications\NewCommentNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PondController extends Controller
 {
@@ -57,14 +59,18 @@ class PondController extends Controller
 
     public function comment(CommentRequest $request)
     {
-        /**
-         * @var \App\Models\Pond
-         */
-        $pond = Pond::findOrFail($request->validated('pond_id'));
+        return DB::transaction(function () use ($request) {
+            /**
+             * @var \App\Models\Pond
+             */
+            $pond = Pond::with('owner')->findOrFail($request->validated('pond_id'));
 
-        $comment = $pond->commentFrom($request->administrator(), $request->validated('message'));
+            $comment = $pond->commentFrom($request->administrator(), $request->validated('message'));
 
-        return CommentResource::make($comment);
+            $pond->owner->notify(new NewCommentNotification($pond, $comment));
+
+            return CommentResource::make($comment);
+        });
     }
 
     public function deleteComment(Comment $comment)

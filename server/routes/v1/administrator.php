@@ -5,6 +5,7 @@ use App\Http\Controllers\V1\Administrator\ClientController;
 use App\Http\Controllers\V1\Administrator\ConversationController;
 use App\Http\Controllers\V1\Administrator\ForgotPasswordController;
 use App\Http\Controllers\V1\Administrator\IssueController;
+use App\Http\Controllers\V1\Administrator\NotificationController;
 use App\Http\Controllers\V1\Administrator\OwnersController;
 use App\Http\Controllers\V1\Administrator\PondController;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +40,5 @@ Route::middleware('auth:administrators')->group(function () {
 
     Route::post('conversations/send', [ConversationController::class, 'send'])->name('conversations.send');
     Route::apiResource('conversations', ConversationController::class)->except(['update', 'destroy']);
+    Route::apiResource('notifications', NotificationController::class)->only(['index', 'update']);
 });

@@ -11,6 +11,7 @@ use App\Http\Resources\CommentResource;
 use App\Http\Resources\Owner\PondResource;
 use App\Models\Comment;
 use App\Models\Pond;
+use App\Notifications\NewCommentNotification;
 use Illuminate\Http\Request;
 
 class PondController extends Controller
@@ -92,9 +93,11 @@ class PondController extends Controller
         /**
          * @var \App\Models\Pond
          */
-        $pond = Pond::findOrFail($request->validated('pond_id'));
+        $pond = Pond::with('owner')->findOrFail($request->validated('pond_id'));
 
         $comment = $pond->commentFrom($request->owner(), $request->validated('message'));
+
+        $pond->owner->notify(new NewCommentNotification($pond, $comment));
 
         return CommentResource::make($comment);
     }

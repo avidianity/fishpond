@@ -4,6 +4,7 @@ use App\Http\Controllers\V1\Client\AuthController;
 use App\Http\Controllers\V1\Client\ConversationController;
 use App\Http\Controllers\V1\Client\ForgotPasswordController;
 use App\Http\Controllers\V1\Client\IssueController;
+use App\Http\Controllers\V1\Client\NotificationController;
 use App\Http\Controllers\V1\Client\PondController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,4 +33,5 @@ Route::middleware('auth:clients')->group(function () {
 
     Route::post('conversations/send', [ConversationController::class, 'send'])->name('conversations.send');
     Route::apiResource('conversations', ConversationController::class)->except(['update', 'destroy']);
+    Route::apiResource('notifications', NotificationController::class)->only(['index', 'update']);
 });

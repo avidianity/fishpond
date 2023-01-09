@@ -21,6 +21,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Otp[] $otps
+ * @property-read int|null $otps_count
  * @method static \Database\Factories\AdministratorFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Administrator newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Administrator newQuery()
@@ -30,7 +32,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Administrator whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Administrator wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Administrator whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class IdeHelperAdministrator {}
 }
@@ -51,6 +52,8 @@ namespace App\Models{
  * @property-read int|null $issues_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Otp[] $otps
+ * @property-read int|null $otps_count
  * @method static \Database\Factories\ClientFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Client newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Client newQuery()
@@ -63,7 +66,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class IdeHelperClient {}
 }
@@ -74,9 +76,9 @@ namespace App\Models{
  *
  * @property string $id
  * @property string $commentable_type
- * @property int $commentable_id
+ * @property string $commentable_id
  * @property string $senderable_type
- * @property int $senderable_id
+ * @property string $senderable_id
  * @property string $message
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -94,9 +96,39 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereSenderableId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereSenderableType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class IdeHelperComment {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Conversation
+ *
+ * @property string $id
+ * @property string $sender_type
+ * @property string $sender_id
+ * @property string $receiver_type
+ * @property string $receiver_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $messages
+ * @property-read int|null $messages_count
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $receiver
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $sender
+ * @method static \Database\Factories\ConversationFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereReceiverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereReceiverType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereSenderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereSenderType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	class IdeHelperConversation {}
 }
 
 namespace App\Models{
@@ -125,7 +157,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|File whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereUrl($value)
- * @mixin \Eloquent
  */
 	class IdeHelperFile {}
 }
@@ -152,9 +183,46 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Issue whereMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Issue wherePondId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Issue whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class IdeHelperIssue {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Message
+ *
+ * @property string $id
+ * @property string $conversation_id
+ * @property mixed|null $metadata
+ * @property \App\Enums\MessageType $type
+ * @property string $sender_type
+ * @property string $sender_id
+ * @property string $receiver_type
+ * @property string $receiver_id
+ * @property string $message
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Conversation $conversation
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $receiver
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $sender
+ * @method static \Database\Factories\MessageFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereConversationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereMetadata($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereReceiverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereReceiverType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereSenderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereSenderType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	class IdeHelperMessage {}
 }
 
 namespace App\Models{
@@ -163,7 +231,7 @@ namespace App\Models{
  *
  * @property string $id
  * @property string $otpable_type
- * @property int $otpable_id
+ * @property string $otpable_id
  * @property string $uuid
  * @property string $code
  * @property int $used
@@ -188,7 +256,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Otp whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Otp whereUsed($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Otp whereUuid($value)
- * @mixin \Eloquent
  */
 	class IdeHelperOtp {}
 }
@@ -207,6 +274,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Otp[] $otps
+ * @property-read int|null $otps_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Pond[] $ponds
  * @property-read int|null $ponds_count
  * @method static \Database\Factories\OwnerFactory factory(...$parameters)
@@ -221,7 +290,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Owner whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Owner wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Owner whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class IdeHelperOwner {}
 }
@@ -235,7 +303,10 @@ namespace App\Models{
  * @property string $name
  * @property string $status
  * @property string $image_url
+ * @property mixed|null $images
  * @property string|null $description
+ * @property mixed|null $latitude
+ * @property mixed|null $longitude
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
@@ -251,11 +322,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereImageUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pond whereImages($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pond whereLatitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pond whereLongitude($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereOwnerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class IdeHelperPond {}
 }
@@ -267,8 +340,8 @@ namespace App\Models{
  * @property string $id
  * @property string $client_id
  * @property string $rateable_type
- * @property int $rateable_id
- * @property int $value
+ * @property string $rateable_id
+ * @property mixed $value
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Client $client
@@ -284,7 +357,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Rating whereRateableType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rating whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rating whereValue($value)
- * @mixin \Eloquent
  */
 	class IdeHelperRating {}
 }

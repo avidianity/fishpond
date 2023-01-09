@@ -1,5 +1,7 @@
 import { Asker } from '@/helpers';
+import { useNotificationList } from '@/hooks/api/notification';
 import { Modes } from '@/types/misc';
+import { Notification } from '@/types/models/notification';
 import {
     Typography,
     Button,
@@ -12,6 +14,7 @@ import {
     MenuItem,
 } from '@material-tailwind/react';
 import { Link, useNavigate } from '@tanstack/react-location';
+import dayjs from 'dayjs';
 import React, { FC, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -30,6 +33,7 @@ type Props = {
 const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+    const notifications = useNotificationList(mode);
 
     const logout = async () => {
         const proceed = await Asker.notice('Are you sure you want to logout?');
@@ -49,6 +53,23 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
     };
 
     const go = (to: string) => navigate({ to });
+
+    const getNotificationMessage = (notification: Notification) => {
+        switch (notification.type) {
+            case 'new-comment':
+                return 'Someone has commented on your pond.';
+        }
+    };
+
+    const handleNotificationAction = (notification: Notification) => {
+        switch (notification.type) {
+            case 'new-comment':
+                navigate({
+                    to: `/${mode}/dashboard/${notification.data.pond_id}`,
+                });
+                break;
+        }
+    };
 
     const navList = (
         <ul className='mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6'>
@@ -80,6 +101,31 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
 
     const menu = (mobile: boolean) => (
         <div>
+            <Menu>
+                <MenuHandler>
+                    <IconButton variant='text' className='mr-1'>
+                        <i className='fas fa-bell fa-2x'></i>
+                    </IconButton>
+                </MenuHandler>
+                <MenuList>
+                    {notifications.map((notification, index) => (
+                        <MenuItem
+                            key={index}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleNotificationAction(notification);
+                            }}
+                        >
+                            <span className='mx-2'>
+                                {getNotificationMessage(notification)}{' '}
+                            </span>
+                            <span className='font-bold ml-auto'>
+                                {dayjs(notification.created_at).fromNow()}
+                            </span>
+                        </MenuItem>
+                    ))}
+                </MenuList>
+            </Menu>
             <IconButton
                 variant='text'
                 onClick={(e) => {
