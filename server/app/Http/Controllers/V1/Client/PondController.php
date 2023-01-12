@@ -9,6 +9,7 @@ use App\Http\Requests\V1\Client\Pond\RateRequest;
 use App\Http\Resources\Client\PondResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\RatingResource;
+use App\Models\Client;
 use App\Models\Comment;
 use App\Models\Pond;
 use App\Notifications\NewCommentNotification;
@@ -59,9 +60,23 @@ class PondController extends Controller
              */
             $pond = Pond::with('owner')->findOrFail($request->validated('pond_id'));
 
-            $comment = $pond->commentFrom($request->client(), $request->validated('message'));
+            $client = $request->client();
+
+            $comment = $pond->commentFrom($client, $request->validated('message'));
 
             $pond->owner->notify(new NewCommentNotification($pond, $comment));
+
+            $clients = Client::query()
+                ->whereHas(
+                    'comments',
+                    fn ($query) =>
+                    $query->where('commentable_type', Pond::class)
+                        ->where('commentable_id', $pond->getKey())
+                )
+                ->where('id', '!=', $client->getKey())
+                ->get();
+
+            $clients->each(fn (Client $client) => $client->notify(new NewCommentNotification($pond, $comment)));
 
             return CommentResource::make($comment);
         });

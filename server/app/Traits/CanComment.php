@@ -4,12 +4,15 @@ namespace App\Traits;
 
 use App\Contracts\Commentable;
 use App\Models\Comment;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-/**
- * @method \Illuminate\Database\Eloquent\Relations\MorphMany comments()
- */
 trait CanComment
 {
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class, 'senderable');
+    }
+
     public function commentTo(Commentable $commentable, string $message): Comment
     {
         return $this->comments()->create([

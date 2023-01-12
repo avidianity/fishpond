@@ -1,5 +1,7 @@
 import { Asker } from '@/helpers';
+import { useService } from '@/hooks';
 import { useNotificationList } from '@/hooks/api/notification';
+import { StorageService } from '@/services/storage';
 import { Modes } from '@/types/misc';
 import { Notification } from '@/types/models/notification';
 import {
@@ -34,6 +36,8 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const notifications = useNotificationList(mode);
+    const storage = useService(StorageService);
+    const id = storage.get('id');
 
     const logout = async () => {
         const proceed = await Asker.notice('Are you sure you want to logout?');
@@ -57,7 +61,9 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
     const getNotificationMessage = (notification: Notification) => {
         switch (notification.type) {
             case 'new-comment':
-                return 'Someone has commented on your pond.';
+                return `Someone has commented on ${
+                    notification.data.owner_id === id ? 'your' : 'a'
+                } pond.`;
         }
     };
 
