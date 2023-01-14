@@ -76,6 +76,11 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
                     to: `/${mode}/dashboard/${notification.data.pond_id}`,
                 });
                 break;
+            case 'reported-pond':
+                navigate({
+                    to: `/${mode}/dashboard/${notification.data.pond_id}`,
+                });
+                break;
         }
     };
 
