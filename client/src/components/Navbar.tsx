@@ -64,6 +64,8 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
                 return `Someone has commented on ${
                     notification.data.owner_id === id ? 'your' : 'a'
                 } pond.`;
+            case 'reported-pond':
+                return `A seller has reported a pond with the message: "${notification.data.message}"`;
         }
     };
 
