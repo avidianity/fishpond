@@ -75,13 +75,12 @@ const Menu: FC<Props> = ({ conversations, onChange, onSearch }) => {
                                 </p>
                                 <p className='text-xs text-grey-darkest'>
                                     {dayjs(
-                                        conversation.messages?.first()
-                                            ?.timestamp
+                                        conversation.messages?.last()?.timestamp
                                     ).format('hh:mm A')}
                                 </p>
                             </div>
                             <p className='text-grey-dark mt-1 text-sm'>
-                                {conversation.messages?.first()?.message}
+                                {conversation.messages?.last()?.message}
                             </p>
                         </div>
                     </div>
