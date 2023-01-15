@@ -117,7 +117,10 @@ const Pond: FC<Props> = ({
                 <div className='pt-4 pb-2'>
                     <Divider />
                 </div>
-                <Typography variant='small' className='mt-2 whitespace-pre'>
+                <Typography
+                    variant='small'
+                    className='mt-2 whitespace-pre-wrap'
+                >
                     {data.description}
                 </Typography>
                 <div className='py-4'>
