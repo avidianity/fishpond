@@ -86,6 +86,14 @@ const Register: FC<Props> = ({ mode, onSubmit }) => {
                             disabled={processing}
                         />
                     </div>
+                    <div className='mt-4 mb-2'>
+                        <Input
+                            type='password'
+                            label='Repeat Password'
+                            {...register('password_confirmation')}
+                            disabled={processing}
+                        />
+                    </div>
                     <div className='mb-4'>
                         <Button
                             type='submit'

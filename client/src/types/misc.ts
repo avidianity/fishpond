@@ -48,6 +48,7 @@ export type ChatUser = {
     first_name: Nullable<string>;
     last_name: Nullable<string>;
     email: string;
+    image?: Image;
 };
 
 export type FormMode = 'add' | 'edit';

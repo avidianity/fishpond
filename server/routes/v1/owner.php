@@ -26,8 +26,6 @@ Route::prefix('auth')->as('auth.')->controller(AuthController::class)->group(fun
 });
 
 Route::middleware('auth:owners')->group(function () {
-    Route::apiResource('files', FileController::class)->only(['store']);
-
     Route::delete('ponds/comment/{comment}', [PondController::class, 'deleteComment'])->name('ponds.comment.destroy');
     Route::post('ponds/comment', [PondController::class, 'comment'])->name('ponds.comment');
     Route::apiResources([
@@ -38,3 +36,5 @@ Route::middleware('auth:owners')->group(function () {
     Route::apiResource('conversations', ConversationController::class)->except(['update', 'destroy']);
     Route::apiResource('notifications', NotificationController::class)->only(['index', 'update']);
 });
+
+Route::apiResource('files', FileController::class)->only(['store']);

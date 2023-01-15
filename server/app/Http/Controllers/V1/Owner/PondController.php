@@ -24,19 +24,23 @@ class PondController extends Controller
         $this->relationships = [
             'comments.senderable',
             'comments' => fn ($query) => $query->oldest(),
-            'ratings'
+            'ratings',
+            'owner',
         ];
     }
 
     public function index(GetRequest $request)
     {
-        $builder = $request->owner()
-            ->ponds();
+        $builder = Pond::query();
 
         if ($request->has('keyword')) {
             $ponds = Pond::search($request->validated('keyword'))->get();
 
             $builder->whereIn('id', $ponds->map->getKey()->toArray());
+        }
+
+        if ($request->has('status')) {
+            $builder->where('status', $request->validated('status'));
         }
 
         $ponds = $builder->with($this->relationships)
@@ -45,11 +49,9 @@ class PondController extends Controller
         return PondResource::collection($ponds);
     }
 
-    public function show(Request $request, $id)
+    public function show($id)
     {
-        $pond = $request->owner()
-            ->ponds()
-            ->with($this->relationships)
+        $pond = Pond::with($this->relationships)
             ->findOrFail($id);
 
         return PondResource::make($pond);

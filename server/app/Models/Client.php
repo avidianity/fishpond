@@ -33,6 +33,9 @@ class Client extends Authenticatable implements JWTSubject, MustVerifyEmail, Can
         'email',
         'password',
         'email_verified_at',
+        'phone',
+        'address',
+        'image_url',
     ];
 
     protected $casts = [

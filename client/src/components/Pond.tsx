@@ -21,6 +21,7 @@ import { HttpService } from '@/services/http';
 import { Conversation } from '@/types/models/converstation';
 import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
 
 type Props = {
     mode: Modes;
@@ -125,33 +126,37 @@ const Pond: FC<Props> = ({
                     ) : null}
                 </div>
             </CardBody>
-            <CardFooter
-                divider
-                className='flex items-center justify-between py-3'
-            >
-                {data.ratings ? (
-                    <ReactStars
-                        value={calculateRatings(data.ratings)}
-                        edit={determineIfStarsAreEditable()}
-                        onChange={(rating) => {
-                            if (determineIfStarsAreEditable()) {
-                                rate(rating);
-                            }
-                        }}
-                    />
-                ) : (
-                    <Typography variant='small'>
-                        <span className='font-bold'>No Ratings</span>
+            <CardFooter divider>
+                <div className='flex items-center justify-between'>
+                    {data.ratings ? (
+                        <ReactStars
+                            value={calculateRatings(data.ratings)}
+                            edit={determineIfStarsAreEditable()}
+                            onChange={(rating) => {
+                                if (determineIfStarsAreEditable()) {
+                                    rate(rating);
+                                }
+                            }}
+                        />
+                    ) : (
+                        <Typography variant='small'>
+                            <span className='font-bold'>No Ratings</span>
+                        </Typography>
+                    )}
+                    <Typography
+                        variant='small'
+                        color={getStatusColor(data.status)}
+                        className='flex gap-1'
+                    >
+                        <i className='fas fa-map-marker-alt fa-sm mt-1 text-gray-700' />
+                        {data.status}
                     </Typography>
-                )}
-                <Typography
-                    variant='small'
-                    color={getStatusColor(data.status)}
-                    className='flex gap-1'
-                >
-                    <i className='fas fa-map-marker-alt fa-sm mt-1 text-gray-700' />
-                    {data.status}
-                </Typography>
+                </div>
+                <div className='flex'>
+                    <span className='ml-auto text-xs mt-3'>
+                        {dayjs(data.created_at).format('MMMM DD, YYYY hh:mm A')}
+                    </span>
+                </div>
             </CardFooter>
         </Card>
     );

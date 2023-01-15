@@ -33,6 +33,9 @@ class Owner extends Authenticatable implements JWTSubject, MustVerifyEmail, CanC
         'email',
         'password',
         'email_verified_at',
+        'phone',
+        'address',
+        'image_url',
     ];
 
     protected $casts = [

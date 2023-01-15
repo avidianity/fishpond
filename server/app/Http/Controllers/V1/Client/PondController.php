@@ -39,6 +39,10 @@ class PondController extends Controller
             $builder->whereIn('id', $ponds->map->getKey()->toArray());
         }
 
+        if ($request->has('status')) {
+            $builder->where('status', $request->validated('status'));
+        }
+
         $ponds = $builder->with($this->relationships)
             ->get();
 

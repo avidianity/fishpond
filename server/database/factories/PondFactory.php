@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Arr;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Pond>
@@ -18,7 +19,7 @@ class PondFactory extends Factory
     {
         return [
             'name' => $this->faker->company,
-            'status' => $this->faker->text(5),
+            'status' => Arr::random(['For Sale', 'For Rent', 'Sold']),
             'image_url' => $this->faker->imageUrl,
             'description' => $this->faker->text,
         ];

@@ -26,7 +26,10 @@ class UpdateRequest extends FormRequest
         return [
             'first_name' => ['nullable', 'string', 'max:255'],
             'last_name' => ['nullable', 'string', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:255'],
             'password' => ['nullable', 'string', 'max:255'],
+            'image_url' => ['nullable', 'url'],
         ];
     }
 }

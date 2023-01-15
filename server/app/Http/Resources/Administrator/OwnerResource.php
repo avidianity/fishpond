@@ -22,6 +22,11 @@ class OwnerResource extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
+            'phone' => $this->phone,
+            'address' => $this->address,
+            'image' => [
+                'url' => $this->image_url,
+            ],
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

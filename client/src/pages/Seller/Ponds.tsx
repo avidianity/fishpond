@@ -1,8 +1,8 @@
 import Pond from '@/components/Pond';
-import { Modes } from '@/constants';
+import { Modes, PondStatus } from '@/constants';
 import { usePondList } from '@/hooks/api/seller/pond';
-import { Nullable } from '@/types/misc';
-import { Button, Input } from '@material-tailwind/react';
+import { Nullable, PondStatus as PondStatusType, Valid } from '@/types/misc';
+import { Button, Input, Option, Select } from '@material-tailwind/react';
 import { useNavigate } from '@tanstack/react-location';
 import { debounce } from 'lodash-es';
 import React, { FC, useState } from 'react';
@@ -10,7 +10,8 @@ import React, { FC, useState } from 'react';
 const Ponds: FC = () => {
     const navigate = useNavigate();
     const [keyword, setKeyword] = useState<Nullable<string>>();
-    const ponds = usePondList(keyword);
+    const [status, setStatus] = useState<PondStatusType>(PondStatus.AVAILABLE);
+    const ponds = usePondList(keyword, status);
 
     const search = debounce((keyword: string) => {
         if (keyword.length >= 2) {
@@ -24,7 +25,7 @@ const Ponds: FC = () => {
         <>
             <div className='flex mb-4'>
                 <div className='flex flex-wrap'>
-                    <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4'>
+                    <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4 flex'>
                         <Input
                             type='search'
                             label='Search'
@@ -33,6 +34,27 @@ const Ponds: FC = () => {
                                 search(e.target.value);
                             }}
                         />
+                        <div className='pl-2'>
+                            <Select
+                                label='Status'
+                                onChange={(node) => {
+                                    const value = node?.toString();
+
+                                    if (value) {
+                                        setStatus(value as Valid);
+                                    }
+                                }}
+                                value={status}
+                            >
+                                {Object.values(PondStatus).map(
+                                    (status, index) => (
+                                        <Option key={index} value={status}>
+                                            {status}
+                                        </Option>
+                                    )
+                                )}
+                            </Select>
+                        </div>
                     </div>
                 </div>
                 <Button

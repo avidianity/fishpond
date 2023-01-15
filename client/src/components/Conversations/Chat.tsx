@@ -13,6 +13,7 @@ import SenderMessage from '@/components/Conversations/SenderMessage';
 import ReceiverMessage from '@/components/Conversations/ReceiverMessage';
 import SenderFile from '@/components/Conversations/SenderFile';
 import ReceiverFile from '@/components/Conversations/ReceiverFile';
+import { parseImageUrl } from '@/helpers';
 
 type Inputs = {
     message: string;
@@ -105,7 +106,7 @@ const Chat: FC<Props> = ({ mode, onMessage, onUpload, onClose }) => {
                     <div>
                         <img
                             className='w-10 h-10 rounded-full'
-                            src='https://via.placeholder.com/600'
+                            src={parseImageUrl(receiver.image)}
                         />
                     </div>
                     <div className='ml-4'>

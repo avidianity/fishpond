@@ -16,4 +16,6 @@ export interface Pond {
     owner: Nullable<Seller>;
     comments: Nullable<Comment<Sender, Pond>[]>;
     ratings: Nullable<Rating[]>;
+    created_at: string;
+    updated_at: string;
 }

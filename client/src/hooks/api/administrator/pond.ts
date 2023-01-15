@@ -1,16 +1,17 @@
 import { useService } from '@/hooks';
 import { PondService } from '@/services/administrator/pond';
-import { Nullable } from '@/types/misc';
+import { Nullable, PondStatus } from '@/types/misc';
 import { isAxiosError } from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 
 const listKey = ['administrator.ponds'];
 
-export function usePondList(keyword?: Nullable<string>) {
+export function usePondList(keyword?: Nullable<string>, status?: PondStatus) {
     const pondService = useService(PondService);
-    const { data } = useQuery(keyword ? [...listKey, keyword] : listKey, () =>
-        pondService.all({ keyword })
+    const { data } = useQuery(
+        keyword ? [...listKey, keyword, status] : [...listKey, status],
+        () => pondService.all({ keyword, status })
     );
 
     return data ?? [];

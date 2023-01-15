@@ -2,7 +2,7 @@
 import swal from 'sweetalert';
 import { Rating } from '@/types/models/rating';
 import { StorageService } from '@/services/storage';
-import { Modes, PondStatus } from '@/types/misc';
+import { Image, Modes, PondStatus } from '@/types/misc';
 
 export function createTokenHeader(token: string) {
     return {
@@ -111,11 +111,25 @@ export function convertPrefixToMode(
 
 export function getStatusColor(status: PondStatus) {
     switch (status) {
-        case 'Available':
+        case 'For Sale':
             return 'green';
-        case 'On Hold':
+        case 'For Rent':
             return 'amber';
         case 'Sold':
             return 'red';
     }
+}
+
+export function parseImageUrl(image?: Image | string) {
+    if (image) {
+        if (typeof image === 'string') {
+            return image;
+        }
+
+        if (image.url) {
+            return image.url;
+        }
+    }
+
+    return 'https://via.placeholder.com/600';
 }

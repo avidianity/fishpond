@@ -1,14 +1,15 @@
 import Pond from '@/components/Pond';
-import { Modes } from '@/constants';
+import { Modes, PondStatus } from '@/constants';
 import { usePondList } from '@/hooks/api/buyer/pond';
-import { Nullable } from '@/types/misc';
-import { Input } from '@material-tailwind/react';
+import { Nullable, PondStatus as PondStatusType, Valid } from '@/types/misc';
+import { Input, Option, Select } from '@material-tailwind/react';
 import { debounce } from 'lodash-es';
 import React, { FC, useState } from 'react';
 
 const Ponds: FC = () => {
     const [keyword, setKeyword] = useState<Nullable<string>>();
-    const ponds = usePondList(keyword);
+    const [status, setStatus] = useState<PondStatusType>(PondStatus.AVAILABLE);
+    const ponds = usePondList(keyword, status);
 
     const search = debounce((keyword: string) => {
         if (keyword.length >= 2) {
@@ -30,6 +31,25 @@ const Ponds: FC = () => {
                             search(e.target.value);
                         }}
                     />
+                </div>
+                <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4 pl-2'>
+                    <Select
+                        label='Status'
+                        onChange={(node) => {
+                            const value = node?.toString();
+
+                            if (value) {
+                                setStatus(value as Valid);
+                            }
+                        }}
+                        value={status}
+                    >
+                        {Object.values(PondStatus).map((status, index) => (
+                            <Option key={index} value={status}>
+                                {status}
+                            </Option>
+                        ))}
+                    </Select>
                 </div>
             </div>
             {ponds.map((pond, index) => (

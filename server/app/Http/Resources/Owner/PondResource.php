@@ -33,6 +33,8 @@ class PondResource extends JsonResource
             'owner' => OwnerResource::make($this->whenLoaded('owner')),
             'comments' => CommentResource::collection($this->whenLoaded('comments')),
             'ratings' => RatingResource::collection($this->whenLoaded('ratings')),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

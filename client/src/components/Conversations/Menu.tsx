@@ -1,5 +1,7 @@
+import { parseImageUrl } from '@/helpers';
 import { useService } from '@/hooks';
 import { StorageService } from '@/services/storage';
+import { ChatUser } from '@/types/misc';
 import { Conversation } from '@/types/models/converstation';
 import { Input } from '@material-tailwind/react';
 import dayjs from 'dayjs';
@@ -14,6 +16,7 @@ type Props = {
 const Menu: FC<Props> = ({ conversations, onChange, onSearch }) => {
     const storage = useService(StorageService);
     const id = storage.get('id');
+    const user = storage.get<ChatUser>('user');
 
     const getReceiver = (conversation: Conversation) => {
         if (conversation.receiver.id === id) {
@@ -39,7 +42,7 @@ const Menu: FC<Props> = ({ conversations, onChange, onSearch }) => {
                 <div>
                     <img
                         className='w-10 h-10 rounded-full'
-                        src='https://via.placeholder.com/600'
+                        src={parseImageUrl(user?.image)}
                     />
                 </div>
             </div>
@@ -65,7 +68,9 @@ const Menu: FC<Props> = ({ conversations, onChange, onSearch }) => {
                         <div>
                             <img
                                 className='h-12 w-12 rounded-full'
-                                src='https://via.placeholder.com/600'
+                                src={parseImageUrl(
+                                    getReceiver(conversation).image
+                                )}
                             />
                         </div>
                         <div className='ml-4 flex-1 border-b border-grey-lighter py-4'>

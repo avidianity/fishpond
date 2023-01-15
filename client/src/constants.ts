@@ -5,9 +5,9 @@ export const Modes = {
 } as const;
 
 export const PondStatus = {
-    AVAILABLE: 'Available',
+    AVAILABLE: 'For Sale',
     SOLD: 'Sold',
-    ON_HOLD: 'On Hold',
+    FOR_RENT: 'For Rent',
 } as const;
 
 export const MessageType = {
