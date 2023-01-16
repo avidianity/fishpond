@@ -119,7 +119,7 @@ const Pond: FC<Props> = ({
                 </div>
                 <Typography
                     variant='small'
-                    className='mt-2 whitespace-pre-wrap'
+                    className='mt-2 whitespace-pre-wrap inline-block'
                 >
                     {data.description}
                 </Typography>
