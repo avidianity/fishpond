@@ -23,9 +23,9 @@ const Ponds: FC = () => {
 
     return (
         <>
-            <div className='flex mb-4'>
+            <div className='flex mb-4 flex-col md:flex-row'>
                 <div className='flex flex-wrap'>
-                    <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4 flex'>
+                    <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4 flex flex-col md:flex-row px-10 md:px-0'>
                         <Input
                             type='search'
                             label='Search'
@@ -34,7 +34,7 @@ const Ponds: FC = () => {
                                 search(e.target.value);
                             }}
                         />
-                        <div className='pl-2'>
+                        <div className='md:pl-2 mt-4 md:mt-0'>
                             <Select
                                 label='Status'
                                 onChange={(node) => {
@@ -57,17 +57,18 @@ const Ponds: FC = () => {
                         </div>
                     </div>
                 </div>
-                <Button
-                    type='button'
-                    color='blue-gray'
-                    onClick={(e) => {
-                        e.preventDefault();
-                        navigate({ to: '/seller/dashboard/add' });
-                    }}
-                    className='ml-auto'
-                >
-                    Add Pond
-                </Button>
+                <div className='md:ml-auto mt-2 md:mt-0 text-center'>
+                    <Button
+                        type='button'
+                        color='blue-gray'
+                        onClick={(e) => {
+                            e.preventDefault();
+                            navigate({ to: '/seller/dashboard/add' });
+                        }}
+                    >
+                        Add Pond
+                    </Button>
+                </div>
             </div>
             <div className='flex flex-wrap'>
                 {ponds.map((pond, index) => (
