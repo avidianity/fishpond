@@ -15,6 +15,8 @@ use Illuminate\Http\UploadedFile;
 class ConversationService
 {
     protected array $relationships = [
+        'sender',
+        'receiver',
         'messages.sender',
         'messages.receiver',
     ];
@@ -46,13 +48,16 @@ class ConversationService
 
     public function one(User $user, string $id): Conversation
     {
+        /**
+         * @var \App\Models\Conversation
+         */
         $conversation = $this->query($user)->findOrFail($id);
 
-        if (is_null($conversation->sender) || is_null($conversation->receiver)) {
-            throw (new ModelNotFoundException)->setModel($conversation, $id);
+        if (!is_null($conversation->sender) && !is_null($conversation->receiver)) {
+            return $conversation;
         }
 
-        return $conversation;
+        throw (new ModelNotFoundException)->setModel($conversation, $id);
     }
 
     public function make(User $sender, User $receiver): Conversation
