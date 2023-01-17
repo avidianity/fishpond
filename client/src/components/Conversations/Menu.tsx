@@ -56,40 +56,47 @@ const Menu: FC<Props> = ({ conversations, onChange, onSearch }) => {
             </div>
 
             <div className='flex-1 overflow-auto'>
-                {conversations.map((conversation, index) => (
-                    <div
-                        className='bg-white px-3 flex items-center hover:bg-gray-100 cursor-pointer'
-                        key={index}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            onChange(conversation);
-                        }}
-                    >
-                        <div>
-                            <img
-                                className='h-12 w-12 rounded-full'
-                                src={parseImageUrl(
-                                    getReceiver(conversation).image
-                                )}
-                            />
-                        </div>
-                        <div className='ml-4 flex-1 border-b border-grey-lighter py-4'>
-                            <div className='flex items-bottom justify-between'>
-                                <p className='text-grey-darkest'>
-                                    {getName(conversation)}
-                                </p>
-                                <p className='text-xs text-grey-darkest'>
-                                    {dayjs(
-                                        conversation.messages?.last()?.timestamp
-                                    ).format('hh:mm A')}
+                {conversations
+                    .filter(
+                        (conversation) =>
+                            conversation.messages &&
+                            conversation.messages.length > 0
+                    )
+                    .map((conversation, index) => (
+                        <div
+                            className='bg-white px-3 flex items-center hover:bg-gray-100 cursor-pointer'
+                            key={index}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onChange(conversation);
+                            }}
+                        >
+                            <div>
+                                <img
+                                    className='h-12 w-12 rounded-full'
+                                    src={parseImageUrl(
+                                        getReceiver(conversation).image
+                                    )}
+                                />
+                            </div>
+                            <div className='ml-4 flex-1 border-b border-grey-lighter py-4'>
+                                <div className='flex items-bottom justify-between'>
+                                    <p className='text-grey-darkest'>
+                                        {getName(conversation)}
+                                    </p>
+                                    <p className='text-xs text-grey-darkest'>
+                                        {dayjs(
+                                            conversation.messages?.last()
+                                                ?.timestamp
+                                        ).format('hh:mm A')}
+                                    </p>
+                                </div>
+                                <p className='text-grey-dark mt-1 text-sm'>
+                                    {conversation.messages?.last()?.message}
                                 </p>
                             </div>
-                            <p className='text-grey-dark mt-1 text-sm'>
-                                {conversation.messages?.last()?.message}
-                            </p>
                         </div>
-                    </div>
-                ))}
+                    ))}
             </div>
         </div>
     );
