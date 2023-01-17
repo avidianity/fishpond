@@ -67,27 +67,21 @@ class ConversationService
 
         $conversation = Conversation::query()
             ->with($this->relationships)
-            ->where(function (Builder $query) use ($senderType, $sender) {
-                return $query->where(function (Builder $query) use ($senderType, $sender) {
-                    return $query->where('sender_type', $senderType)
-                        ->where('sender_id', $sender->getKey());
-                })->orWhere(function (Builder $query) use ($senderType, $sender) {
-                    return $query->where('receiver_type', $senderType)
-                        ->where('receiver_id', $sender->getKey());
-                });
+            ->where(function (Builder $builder) use ($senderType, $sender, $receiverType, $receiver) {
+                return $builder->where('sender_type', $senderType)
+                    ->where('sender_id', $sender->getKey())
+                    ->where('receiver_type', $receiverType)
+                    ->where('receiver_id', $receiver->getKey());
             })
-            ->where(function (Builder $query) use ($receiverType, $receiver) {
-                return $query->where(function (Builder $query) use ($receiverType, $receiver) {
-                    return $query->where('sender_type', $receiverType)
-                        ->where('sender_id', $receiver->getKey());
-                })->orWhere(function (Builder $query) use ($receiverType, $receiver) {
-                    return $query->where('receiver_type', $receiverType)
-                        ->where('receiver_id', $receiver->getKey());
-                });
+            ->orWhere(function (Builder $builder) use ($senderType, $sender, $receiverType, $receiver) {
+                return $builder->where('sender_type', $receiverType)
+                    ->where('sender_id', $receiver->getKey())
+                    ->where('receiver_type', $senderType)
+                    ->where('receiver_id', $sender->getKey());
             })
             ->first();
 
-        if ($conversation) {
+        if (!is_null($conversation)) {
             return $conversation;
         }
 
