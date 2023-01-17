@@ -48,7 +48,7 @@ class ConversationService
     {
         $conversation = $this->query($user)->findOrFail($id);
 
-        if (is_null($conversation->sender) && is_null($conversation->receiver)) {
+        if (is_null($conversation->sender) || is_null($conversation->receiver)) {
             throw (new ModelNotFoundException)->setModel($conversation, $id);
         }
 
