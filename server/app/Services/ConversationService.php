@@ -8,6 +8,7 @@ use App\Models\File;
 use App\Models\Message;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\UploadedFile;
 
@@ -23,7 +24,9 @@ class ConversationService
      */
     public function all(User $user): Collection
     {
-        return $this->query($user)->get();
+        return $this->query($user)->get()->filter(function (Conversation $conversation) {
+            return !is_null($conversation->sender) && !is_null($conversation->receiver);
+        });
     }
 
     /**
@@ -40,7 +43,13 @@ class ConversationService
 
     public function one(User $user, string $id): Conversation
     {
-        return $this->query($user)->findOrFail($id);
+        $conversation = $this->query($user)->findOrFail($id);
+
+        if (is_null($conversation->sender) && is_null($conversation->receiver)) {
+            throw (new ModelNotFoundException)->setModel($conversation, $id);
+        }
+
+        return $conversation;
     }
 
     public function make(User $sender, User $receiver): Conversation
