@@ -38,7 +38,10 @@ class ConversationService
 
         return $this->query($user)
             ->whereIn('id', $matches->map->getKey()->toArray())
-            ->get();
+            ->get()
+            ->filter(function (Conversation $conversation) {
+                return !is_null($conversation->sender) && !is_null($conversation->receiver);
+            });
     }
 
     public function one(User $user, string $id): Conversation
