@@ -2,7 +2,7 @@ import Container from '@/components/Container';
 import Navbar from '@/components/Navbar';
 import { Modes } from '@/constants';
 import { useService } from '@/hooks';
-import { AuthService } from '@/services/seller/auth';
+import { AuthService } from '@/services/buyer/auth';
 import { Outlet } from '@tanstack/react-location';
 import React, { FC } from 'react';
 
