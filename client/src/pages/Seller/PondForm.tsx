@@ -83,7 +83,7 @@ const PondForm: FC<Props> = ({ mode }) => {
             setValue('square_meters', pond.square_meters);
             setValue('location_url', pond.location_url);
 
-            setPondClass(pond.class);
+            setPondClass(pond.class ?? '');
             setStatus(pond.status);
             setPreview(pond.image.url);
             setPictures(pond.images ?? []);
