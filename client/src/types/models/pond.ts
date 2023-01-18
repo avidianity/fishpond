@@ -13,6 +13,10 @@ export interface Pond {
     images?: string[];
     latitude?: number;
     longitude?: number;
+    class: Nullable<string>;
+    price: Nullable<string>;
+    location_url: Nullable<string>;
+    square_meters: Nullable<string>;
     owner: Nullable<Seller>;
     comments: Nullable<Comment<Sender, Pond>[]>;
     ratings: Nullable<Rating[]>;

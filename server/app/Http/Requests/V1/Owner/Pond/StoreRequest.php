@@ -32,6 +32,10 @@ class StoreRequest extends FormRequest
             'images.*' => ['nullable', 'url'],
             'latitude' => ['nullable', 'numeric'],
             'longitude' => ['nullable', 'numeric'],
+            'class' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'string', 'max:255'],
+            'location_url' => ['required', 'url', 'max:255'],
+            'square_meters' => ['required', 'string', 'max:255'],
         ];
     }
 }

@@ -33,6 +33,10 @@ class Pond extends Model implements Commentable
         'images',
         'latitude',
         'longitude',
+        'class',
+        'price',
+        'location_url',
+        'square_meters',
     ];
 
     protected $casts = [

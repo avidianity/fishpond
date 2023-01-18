@@ -13,7 +13,7 @@ import { upperFirst } from 'lodash-es';
 import { useForm } from 'react-hook-form';
 import { PondPayload } from '@/types/payloads/pond';
 import { usePondMutation } from '@/hooks/api/seller/pond';
-import { PondStatus } from '@/constants';
+import { PondClass, PondStatus } from '@/constants';
 import { useService } from '@/hooks';
 import { FileService } from '@/services/seller/file';
 import { isAxiosError } from 'axios';
@@ -29,6 +29,7 @@ type Props = {
 const PondForm: FC<Props> = ({ mode }) => {
     const [processing, setProcessing] = useState(false);
     const [status, setStatus] = useState<string>(PondStatus.AVAILABLE);
+    const [pondClass, setPondClass] = useState<string>(PondClass.A);
     const { register, handleSubmit, setValue } = useForm<PondPayload>();
     const mutation = usePondMutation(mode);
     const [preview, setPreview] = useState('https://via.placeholder.com/600');
@@ -59,6 +60,7 @@ const PondForm: FC<Props> = ({ mode }) => {
         payload.status = status as Valid;
         payload.image_url = preview;
         payload.images = pictures;
+        payload.class = pondClass;
         try {
             await mutation.mutateAsync(payload);
             goBack();
@@ -77,6 +79,11 @@ const PondForm: FC<Props> = ({ mode }) => {
             setValue('description', pond.description);
             setValue('latitude', pond.latitude);
             setValue('longitude', pond.longitude);
+            setValue('price', pond.price);
+            setValue('square_meters', pond.square_meters);
+            setValue('location_url', pond.location_url);
+
+            setPondClass(pond.class);
             setStatus(pond.status);
             setPreview(pond.image.url);
             setPictures(pond.images ?? []);
@@ -277,6 +284,50 @@ const PondForm: FC<Props> = ({ mode }) => {
                             {Object.values(PondStatus).map((status, index) => (
                                 <Option key={index} value={status}>
                                     {status}
+                                </Option>
+                            ))}
+                        </Select>
+                    </div>
+                    <div className='my-4'>
+                        <Input
+                            type='text'
+                            label='Price'
+                            {...register('price')}
+                            disabled={processing}
+                        />
+                    </div>
+                    <div className='my-4'>
+                        <Input
+                            type='url'
+                            label='Location'
+                            {...register('location_url')}
+                            disabled={processing}
+                        />
+                    </div>
+                    <div className='my-4'>
+                        <Input
+                            type='text'
+                            label='SQM'
+                            {...register('square_meters')}
+                            disabled={processing}
+                        />
+                    </div>
+                    <div className='my-4'>
+                        <Select
+                            label='Class'
+                            disabled={processing}
+                            onChange={(node) => {
+                                const value = node?.toString();
+
+                                if (value) {
+                                    setPondClass(value);
+                                }
+                            }}
+                            value={pondClass}
+                        >
+                            {Object.values(PondClass).map((name, index) => (
+                                <Option key={index} value={name}>
+                                    {name}
                                 </Option>
                             ))}
                         </Select>

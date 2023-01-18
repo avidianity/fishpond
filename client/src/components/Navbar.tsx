@@ -109,6 +109,48 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
                     </Link>
                 </Typography>
             ))}
+            {window.innerWidth <= 768 ? (
+                <>
+                    <Typography
+                        as='li'
+                        variant='small'
+                        color='blue-gray'
+                        className='p-1 font-normal'
+                    >
+                        <Link
+                            to={`/${mode}/dashboard/settings`}
+                            className='flex items-center'
+                            getActiveProps={() => ({
+                                className:
+                                    'text-blue-600 border-b border-b-blue-600',
+                            })}
+                        >
+                            Settings
+                        </Link>
+                    </Typography>
+                    <Typography
+                        as='li'
+                        variant='small'
+                        color='blue-gray'
+                        className='p-1 font-normal'
+                    >
+                        <Link
+                            to={`/${mode}/dashboard/logout`}
+                            className='flex items-center'
+                            getActiveProps={() => ({
+                                className:
+                                    'text-blue-600 border-b border-b-blue-600',
+                            })}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                logout();
+                            }}
+                        >
+                            Logout
+                        </Link>
+                    </Typography>
+                </>
+            ) : null}
         </ul>
     );
 
@@ -195,15 +237,19 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
     }, []);
 
     return (
-        <BaseNavbar className='mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4 border border-gray-100'>
+        <BaseNavbar className='mx-auto max-w-screen-xl py-2 px-4 lg:px-8 border border-gray-100'>
             <div className='container mx-auto flex items-center justify-between text-blue-gray-900'>
                 <Typography
                     as='a'
                     href={`/${mode}/dashboard/`}
                     variant='small'
-                    className='mr-4 cursor-pointer py-1.5 font-normal italic'
+                    className='cursor-pointer'
                 >
-                    <span>LookApond</span>
+                    <img
+                        src='/icon.png'
+                        alt='LookApond'
+                        className='h-8 w-8 rounded-full'
+                    />
                 </Typography>
                 <div className='hidden lg:block'>{navList}</div>
                 {menu(true)}
@@ -245,10 +291,7 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
                     )}
                 </IconButton>
             </div>
-            <MobileNav open={open}>
-                {navList}
-                {menu(false)}
-            </MobileNav>
+            <MobileNav open={open}>{navList}</MobileNav>
         </BaseNavbar>
     );
 };

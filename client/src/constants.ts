@@ -14,3 +14,9 @@ export const MessageType = {
     TEXT: 'text',
     FILE: 'file',
 } as const;
+
+export const PondClass = {
+    A: 'Class A',
+    B: 'Class B',
+    C: 'Class C',
+} as const;

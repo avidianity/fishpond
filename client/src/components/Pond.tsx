@@ -22,6 +22,7 @@ import { Conversation } from '@/types/models/converstation';
 import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
+import { PondStatus } from '@/constants';
 
 type Props = {
     mode: Modes;
@@ -113,13 +114,29 @@ const Pond: FC<Props> = ({
                         />
                     </Typography>
                 ) : null}
-
+                <Typography variant='small' className='font-bold'>
+                    SQM: {data.square_meters}
+                </Typography>
+                <Typography variant='small' className='font-bold'>
+                    Price: {data.price}
+                </Typography>
+                <Typography variant='small' className='font-bold'>
+                    Location:{' '}
+                    <a
+                        href={data.location_url ?? ''}
+                        target='_blank'
+                        rel='noreferrer'
+                        className='text-blue-500 hover:underline'
+                    >
+                        {data.location_url}
+                    </a>
+                </Typography>
                 <div className='pt-4 pb-2'>
                     <Divider />
                 </div>
                 <Typography
                     variant='small'
-                    className='mt-2 whitespace-pre-wrap inline-block'
+                    className='mt-2 whitespace-pre-wrap inline-block font-bold'
                 >
                     {data.description}
                 </Typography>
@@ -131,25 +148,31 @@ const Pond: FC<Props> = ({
             </CardBody>
             <CardFooter divider>
                 <div className='flex items-center justify-between'>
-                    {data.ratings ? (
-                        <ReactStars
-                            value={calculateRatings(data.ratings)}
-                            edit={determineIfStarsAreEditable()}
-                            onChange={(rating) => {
-                                if (determineIfStarsAreEditable()) {
-                                    rate(rating);
-                                }
-                            }}
-                        />
-                    ) : (
-                        <Typography variant='small'>
-                            <span className='font-bold'>No Ratings</span>
-                        </Typography>
-                    )}
+                    <div
+                        className={`${
+                            data.status === PondStatus.FOR_RENT ? '' : 'hidden'
+                        }`}
+                    >
+                        {data.ratings ? (
+                            <ReactStars
+                                value={calculateRatings(data.ratings)}
+                                edit={determineIfStarsAreEditable()}
+                                onChange={(rating) => {
+                                    if (determineIfStarsAreEditable()) {
+                                        rate(rating);
+                                    }
+                                }}
+                            />
+                        ) : (
+                            <Typography variant='small'>
+                                <span className='font-bold'>No Ratings</span>
+                            </Typography>
+                        )}
+                    </div>
                     <Typography
                         variant='small'
                         color={getStatusColor(data.status)}
-                        className='flex gap-1'
+                        className='flex gap-1 ml-auto'
                     >
                         <i className='fas fa-map-marker-alt fa-sm mt-1 text-gray-700' />
                         {data.status}
