@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios, { Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { Axios, RawAxiosRequestConfig, AxiosResponse } from 'axios';
 import { StorageService } from '@/services/storage';
 import { SERVER_URL } from '@/config/app';
 
@@ -20,12 +20,7 @@ export class HttpService {
             const token = storage.get<string>('token');
 
             if (token) {
-                return {
-                    ...request,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                };
+                request.headers.set('Authorization', `Bearer ${token}`);
             }
 
             return request;
@@ -42,14 +37,14 @@ export class HttpService {
 
     public get<T = any, R = AxiosResponse<T>, D = any>(
         url: string,
-        config?: AxiosRequestConfig<D>
+        config?: RawAxiosRequestConfig<D>
     ) {
         return this.client.get<T, R, D>(url, config);
     }
 
     public delete<T = any, R = AxiosResponse<T>, D = any>(
         url: string,
-        config?: AxiosRequestConfig<D>
+        config?: RawAxiosRequestConfig<D>
     ) {
         return this.client.delete<T, R, D>(url, config);
     }
@@ -57,7 +52,7 @@ export class HttpService {
     public post<T = any, R = AxiosResponse<T>, D = any>(
         url: string,
         data?: D,
-        config?: AxiosRequestConfig<D>
+        config?: RawAxiosRequestConfig<D>
     ) {
         return this.client.post<T, R, D>(url, data, config);
     }
@@ -65,7 +60,7 @@ export class HttpService {
     public put<T = any, R = AxiosResponse<T>, D = any>(
         url: string,
         data?: D,
-        config?: AxiosRequestConfig<D>
+        config?: RawAxiosRequestConfig<D>
     ) {
         return this.client.put<T, R, D>(url, data, config);
     }
@@ -73,14 +68,14 @@ export class HttpService {
     public patch<T = any, R = AxiosResponse<T>, D = any>(
         url: string,
         data?: D,
-        config?: AxiosRequestConfig<D>
+        config?: RawAxiosRequestConfig<D>
     ) {
         return this.client.patch<T, R, D>(url, data, config);
     }
 
     public head<T = any, R = AxiosResponse<T>, D = any>(
         url: string,
-        config?: AxiosRequestConfig<D>
+        config?: RawAxiosRequestConfig<D>
     ) {
         return this.client.head<T, R, D>(url, config);
     }
