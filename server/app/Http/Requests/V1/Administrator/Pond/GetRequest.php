@@ -26,6 +26,7 @@ class GetRequest extends FormRequest
         return [
             'keyword' => ['nullable', 'string', 'max:255'],
             'status' => ['nullable', 'string', 'max:255'],
+            'class' => ['nullable', 'string', 'max:255'],
         ];
     }
 }
