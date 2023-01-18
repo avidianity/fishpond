@@ -1,4 +1,4 @@
-import { MessageType, Modes, PondStatus } from '@/constants';
+import { MessageType, Modes, PondClass, PondStatus } from '@/constants';
 import { MRT_ColumnDef } from 'material-react-table';
 import { Administrator } from '@/types/models/administrator/administrator';
 import { Buyer } from '@/types/models/administrator/buyer';
@@ -56,3 +56,5 @@ export type FormMode = 'add' | 'edit';
 export type Params = Record<string, Valid>;
 
 export type MessageType = ObjectAsType<typeof MessageType>;
+
+export type PondClass = ObjectAsType<typeof PondClass>;

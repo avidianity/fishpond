@@ -1,16 +1,20 @@
 import { useService } from '@/hooks';
 import { PondService } from '@/services/buyer/pond';
-import { Nullable, PondStatus } from '@/types/misc';
+import { Nullable, PondClass, PondStatus } from '@/types/misc';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 
 const listKey = ['buyer.ponds'];
 
-export function usePondList(keyword?: Nullable<string>, status?: PondStatus) {
+export function usePondList(
+    keyword?: Nullable<string>,
+    status?: PondStatus,
+    pondClass?: PondClass
+) {
     const pondService = useService(PondService);
     const { data } = useQuery(
         keyword ? [...listKey, keyword, status] : [...listKey, status],
-        () => pondService.all({ keyword, status })
+        () => pondService.all({ keyword, status, class: pondClass })
     );
 
     return data ?? [];

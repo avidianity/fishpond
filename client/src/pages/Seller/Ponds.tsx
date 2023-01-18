@@ -1,7 +1,12 @@
 import Pond from '@/components/Pond';
-import { Modes, PondStatus } from '@/constants';
+import { Modes, PondClass, PondStatus } from '@/constants';
 import { usePondList } from '@/hooks/api/seller/pond';
-import { Nullable, PondStatus as PondStatusType, Valid } from '@/types/misc';
+import {
+    Nullable,
+    PondClass as PondClassType,
+    PondStatus as PondStatusType,
+    Valid,
+} from '@/types/misc';
 import { Button, Input, Option, Select } from '@material-tailwind/react';
 import { useNavigate } from '@tanstack/react-location';
 import { debounce } from 'lodash-es';
@@ -11,7 +16,8 @@ const Ponds: FC = () => {
     const navigate = useNavigate();
     const [keyword, setKeyword] = useState<Nullable<string>>();
     const [status, setStatus] = useState<PondStatusType>(PondStatus.AVAILABLE);
-    const ponds = usePondList(keyword, status);
+    const [pondClass, setPondClass] = useState<PondClassType>(PondClass.A);
+    const ponds = usePondList(keyword, status, pondClass);
 
     const search = debounce((keyword: string) => {
         if (keyword.length >= 2) {
@@ -25,16 +31,18 @@ const Ponds: FC = () => {
         <>
             <div className='flex mb-4 flex-col md:flex-row'>
                 <div className='flex flex-wrap'>
-                    <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4 flex flex-col md:flex-row px-10 md:px-0'>
-                        <Input
-                            type='search'
-                            label='Search'
-                            onChange={(e) => {
-                                e.preventDefault();
-                                search(e.target.value);
-                            }}
-                        />
-                        <div className='md:pl-2 mt-4 md:mt-0'>
+                    <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4 flex flex-col md:flex-row'>
+                        <div className='p-2'>
+                            <Input
+                                type='search'
+                                label='Search'
+                                onChange={(e) => {
+                                    e.preventDefault();
+                                    search(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div className='p-2'>
                             <Select
                                 label='Status'
                                 onChange={(node) => {
@@ -55,9 +63,28 @@ const Ponds: FC = () => {
                                 )}
                             </Select>
                         </div>
+                        <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2'>
+                            <Select
+                                label='Class'
+                                onChange={(node) => {
+                                    const value = node?.toString();
+
+                                    if (value) {
+                                        setPondClass(value as Valid);
+                                    }
+                                }}
+                                value={pondClass}
+                            >
+                                {Object.values(PondClass).map((name, index) => (
+                                    <Option key={index} value={name}>
+                                        {name}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </div>
                     </div>
                 </div>
-                <div className='md:ml-auto mt-2 md:mt-0 text-center'>
+                <div className='md:ml-auto mt-2 pr-2 text-center'>
                     <Button
                         type='button'
                         color='blue-gray'

@@ -1,7 +1,12 @@
 import Pond from '@/components/Pond';
-import { Modes, PondStatus } from '@/constants';
+import { Modes, PondClass, PondStatus } from '@/constants';
 import { usePondList } from '@/hooks/api/administrator/pond';
-import { Nullable, PondStatus as PondStatusType, Valid } from '@/types/misc';
+import {
+    Nullable,
+    PondClass as PondClassType,
+    PondStatus as PondStatusType,
+    Valid,
+} from '@/types/misc';
 import { Input, Option, Select } from '@material-tailwind/react';
 import { debounce } from 'lodash-es';
 import React, { FC, useState } from 'react';
@@ -9,7 +14,8 @@ import React, { FC, useState } from 'react';
 const Ponds: FC = () => {
     const [keyword, setKeyword] = useState<Nullable<string>>();
     const [status, setStatus] = useState<PondStatusType>(PondStatus.AVAILABLE);
-    const ponds = usePondList(keyword, status);
+    const [pondClass, setPondClass] = useState<PondClassType>(PondClass.A);
+    const ponds = usePondList(keyword, status, pondClass);
 
     const search = debounce((keyword: string) => {
         if (keyword.length >= 2) {
@@ -22,7 +28,7 @@ const Ponds: FC = () => {
     return (
         <div className='flex flex-wrap'>
             <div className='w-full flex flex-wrap'>
-                <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4'>
+                <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2'>
                     <Input
                         type='search'
                         label='Search'
@@ -32,7 +38,7 @@ const Ponds: FC = () => {
                         }}
                     />
                 </div>
-                <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4 pl-2'>
+                <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2'>
                     <Select
                         label='Status'
                         onChange={(node) => {
@@ -47,6 +53,25 @@ const Ponds: FC = () => {
                         {Object.values(PondStatus).map((status, index) => (
                             <Option key={index} value={status}>
                                 {status}
+                            </Option>
+                        ))}
+                    </Select>
+                </div>
+                <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2'>
+                    <Select
+                        label='Class'
+                        onChange={(node) => {
+                            const value = node?.toString();
+
+                            if (value) {
+                                setPondClass(value as Valid);
+                            }
+                        }}
+                        value={pondClass}
+                    >
+                        {Object.values(PondClass).map((name, index) => (
+                            <Option key={index} value={name}>
+                                {name}
                             </Option>
                         ))}
                     </Select>
