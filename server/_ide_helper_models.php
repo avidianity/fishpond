@@ -19,6 +19,8 @@ namespace App\Models{
  * @property string $password
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ * @property-read int|null $comments_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Otp[] $otps
@@ -38,6 +40,32 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Approval
+ *
+ * @property string $id
+ * @property bool $approved
+ * @property string $approvable_type
+ * @property string $approvable_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $approvable
+ * @method static \Database\Factories\ApprovalFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Approval newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Approval newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Approval query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Approval whereApprovableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Approval whereApprovableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Approval whereApproved($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Approval whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Approval whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Approval whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	class IdeHelperApproval {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Client
  *
  * @property string $id
@@ -48,6 +76,11 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $phone
+ * @property string|null $address
+ * @property string|null $image_url
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ * @property-read int|null $comments_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Issue[] $issues
  * @property-read int|null $issues_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
@@ -58,13 +91,16 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Client newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Client newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Client query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Client whereAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Client whereImageUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Client wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereUpdatedAt($value)
  */
 	class IdeHelperClient {}
@@ -126,7 +162,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereSenderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereSenderType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Conversation whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class IdeHelperConversation {}
 }
@@ -220,7 +255,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereSenderType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class IdeHelperMessage {}
 }
@@ -272,6 +306,11 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $phone
+ * @property string|null $address
+ * @property string|null $image_url
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ * @property-read int|null $comments_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Otp[] $otps
@@ -282,13 +321,16 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Owner newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Owner newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Owner query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Owner whereAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Owner whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Owner whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Owner whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Owner whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Owner whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Owner whereImageUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Owner whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Owner wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Owner wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Owner whereUpdatedAt($value)
  */
 	class IdeHelperOwner {}
@@ -309,24 +351,34 @@ namespace App\Models{
  * @property mixed|null $longitude
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $class
+ * @property string|null $price
+ * @property string|null $location_url
+ * @property string|null $square_meters
+ * @property-read \App\Models\Approval|null $approval
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  * @property-read int|null $comments_count
  * @property-read \App\Models\Owner $owner
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Rating[] $ratings
  * @property-read int|null $ratings_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Pond approved(bool $approved = true)
  * @method static \Database\Factories\PondFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Pond newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Pond query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Pond whereClass($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereImageUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereImages($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereLatitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pond whereLocationUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereLongitude($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereOwnerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pond wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pond whereSquareMeters($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Pond whereUpdatedAt($value)
  */

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\V1\Administrator\ApprovalController;
 use App\Http\Controllers\V1\Administrator\AuthController;
 use App\Http\Controllers\V1\Administrator\ClientController;
 use App\Http\Controllers\V1\Administrator\ConversationController;
@@ -41,4 +42,6 @@ Route::middleware('auth:administrators')->group(function () {
     Route::post('conversations/send', [ConversationController::class, 'send'])->name('conversations.send');
     Route::apiResource('conversations', ConversationController::class)->except(['update', 'destroy']);
     Route::apiResource('notifications', NotificationController::class)->only(['index', 'update']);
+
+    Route::apiResource('approvals', ApprovalController::class)->except('store');
 });

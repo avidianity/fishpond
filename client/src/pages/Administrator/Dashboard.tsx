@@ -38,6 +38,10 @@ const Dashboard: FC = () => {
                         to: 'issues',
                         title: 'Issues',
                     },
+                    {
+                        to: 'approvals',
+                        title: 'Approval Requests',
+                    },
                 ]}
             />
             <Container>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Commentable;
+use App\Traits\HasApproval;
 use App\Traits\HasComments;
 use App\Traits\HasRatings;
 use Avidianity\LaravelExtras\Casts\FloatCast;
@@ -23,6 +24,7 @@ class Pond extends Model implements Commentable
     use HasComments;
     use HasRatings;
     use Searchable;
+    use HasApproval;
 
     protected $fillable = [
         'owner_id',

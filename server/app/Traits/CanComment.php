@@ -6,6 +6,9 @@ use App\Contracts\Commentable;
 use App\Models\Comment;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+/**
+ * @mixin \Illuminate\Database\Eloquent\Model
+ */
 trait CanComment
 {
     public function comments(): MorphMany

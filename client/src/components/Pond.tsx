@@ -115,6 +115,9 @@ const Pond: FC<Props> = ({
                     </Typography>
                 ) : null}
                 <Typography variant='small' className='font-bold'>
+                    {data.class}
+                </Typography>
+                <Typography variant='small' className='font-bold'>
                     SQM: {data.square_meters}
                 </Typography>
                 <Typography variant='small' className='font-bold'>

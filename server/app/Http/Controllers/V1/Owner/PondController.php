@@ -31,7 +31,7 @@ class PondController extends Controller
 
     public function index(GetRequest $request)
     {
-        $builder = Pond::query();
+        $builder = Pond::approved();
 
         if ($request->has('keyword')) {
             $ponds = Pond::search($request->validated('keyword'))->get();
@@ -51,7 +51,8 @@ class PondController extends Controller
 
     public function show($id)
     {
-        $pond = Pond::with($this->relationships)
+        $pond = Pond::approved()
+            ->with($this->relationships)
             ->findOrFail($id);
 
         return PondResource::make($pond);
