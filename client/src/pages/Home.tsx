@@ -46,7 +46,7 @@ const Home: FC = () => {
                 </Typography>
             </div>
             {!closeDisclaimer ? (
-                <div className='absolute shadow-lg border border-gray-200 rounded-lg p-4 mx-auto bottom-5 flex items-center'>
+                <div className='absolute shadow-lg border bg-white border-gray-200 rounded-lg p-4 mx-4 md:mx-auto bottom-5 flex items-center z-30'>
                     <Typography variant='small' color='gray'>
                         <span className='font-bold'>Disclaimer:</span> LookApond
                         makes no responsibility for fake posts and accounts .
