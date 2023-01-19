@@ -155,10 +155,10 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
     );
 
     const menu = (mobile: boolean) => (
-        <div>
+        <div className='flex md:block w-full md:w-auto'>
             <Menu>
                 <MenuHandler>
-                    <IconButton variant='text' className='mr-1'>
+                    <IconButton variant='text' className='mr-1 ml-auto md:ml-0'>
                         <i className='fas fa-bell fa-2x'></i>
                     </IconButton>
                 </MenuHandler>
