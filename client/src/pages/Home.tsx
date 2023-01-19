@@ -1,9 +1,10 @@
 import { Button, Typography } from '@material-tailwind/react';
 import { useNavigate } from '@tanstack/react-location';
-import React, { FC, MouseEventHandler } from 'react';
+import React, { FC, MouseEventHandler, useState } from 'react';
 
 const Home: FC = () => {
     const navigate = useNavigate();
+    const [closeDisclaimer, setCloseDisclaimer] = useState(false);
 
     const createHandler = (
         target: string
@@ -17,7 +18,7 @@ const Home: FC = () => {
     };
 
     return (
-        <div className='flex items-center justify-center h-screen w-screen'>
+        <div className='flex items-center justify-center h-screen w-screen relative'>
             <div className='px-14 py-20 text-center shadow-lg border border-gray-100 rounded-xl relative'>
                 <h4 className='text-4xl font-bold italic'>LookApond</h4>
                 <h6 className='text-lg mt-1'>Buy and Rent</h6>
@@ -44,6 +45,27 @@ const Home: FC = () => {
                     Administrator
                 </Typography>
             </div>
+            {!closeDisclaimer ? (
+                <div className='absolute shadow-lg border border-gray-200 rounded-lg p-4 mx-auto bottom-5 flex items-center'>
+                    <Typography variant='small' color='gray'>
+                        <span className='font-bold'>Disclaimer:</span> LookApond
+                        makes no responsibility for fake posts and accounts .
+                        Your use of site is solely at your own risk.
+                    </Typography>
+                    <Button
+                        type='button'
+                        className='ml-3'
+                        size='sm'
+                        color='gray'
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setCloseDisclaimer(true);
+                        }}
+                    >
+                        Close
+                    </Button>
+                </div>
+            ) : null}
         </div>
     );
 };
