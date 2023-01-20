@@ -30,6 +30,7 @@ type Props = {
     cardClassName?: string;
     headerClassName?: string;
     bodyClassName?: string;
+    multiple?: boolean;
 };
 
 const Pond: FC<Props> = ({
@@ -38,6 +39,7 @@ const Pond: FC<Props> = ({
     cardClassName,
     headerClassName,
     bodyClassName,
+    multiple,
 }) => {
     const storage = useService(StorageService);
     const mutation = usePondRate(data.id);
@@ -128,26 +130,30 @@ const Pond: FC<Props> = ({
                 <Typography variant='small' className='font-bold'>
                     Price: {data.price}
                 </Typography>
-                <Typography variant='small' className='font-bold'>
-                    Location:{' '}
-                    <a
-                        href={data.location_url ?? ''}
-                        target='_blank'
-                        rel='noreferrer'
-                        className='text-blue-500 hover:underline'
-                    >
-                        {data.location_url}
-                    </a>
-                </Typography>
+                {!multiple ? (
+                    <Typography variant='small' className='font-bold'>
+                        Location:{' '}
+                        <a
+                            href={data.location_url ?? ''}
+                            target='_blank'
+                            rel='noreferrer'
+                            className='text-blue-500 hover:underline'
+                        >
+                            {data.location_url}
+                        </a>
+                    </Typography>
+                ) : null}
                 <div className='pt-4 pb-2'>
                     <Divider />
                 </div>
-                <Typography
-                    variant='small'
-                    className='mt-2 whitespace-pre-wrap inline-block font-bold'
-                >
-                    {data.description}
-                </Typography>
+                {!multiple ? (
+                    <Typography
+                        variant='small'
+                        className='mt-2 whitespace-pre-wrap inline-block font-bold'
+                    >
+                        {data.description}
+                    </Typography>
+                ) : null}
                 <div className='py-4'>
                     {data.images && data.images.length > 0 ? (
                         <PicturesModal pictures={data.images} />

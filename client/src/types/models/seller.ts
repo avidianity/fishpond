@@ -1,4 +1,5 @@
 import { Image, Nullable } from '../misc';
+import { Pond } from '@/types/models/pond';
 
 export interface Seller {
     id: string;
@@ -8,6 +9,7 @@ export interface Seller {
     phone: Nullable<string>;
     address: Nullable<string>;
     image: Image;
+    ponds?: Nullable<Pond[]>;
     created_at: string;
     updated_at: string;
 }

@@ -15,9 +15,13 @@ import React, { FC, useState } from 'react';
 const Ponds: FC = () => {
     const navigate = useNavigate();
     const [keyword, setKeyword] = useState<Nullable<string>>();
-    const [status, setStatus] = useState<PondStatusType>(PondStatus.AVAILABLE);
-    const [pondClass, setPondClass] = useState<PondClassType>(PondClass.A);
-    const ponds = usePondList(keyword, status, pondClass);
+    const [status, setStatus] = useState<PondStatusType>(PondStatus.ALL);
+    const [pondClass, setPondClass] = useState<PondClassType>(PondClass.ALL);
+    const ponds = usePondList(
+        keyword,
+        status === PondStatus.ALL ? undefined : status,
+        pondClass === PondClass.ALL ? undefined : pondClass
+    );
 
     const search = debounce((keyword: string) => {
         if (keyword.length >= 2) {

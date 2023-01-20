@@ -9,7 +9,7 @@ const listKey = ['administrator.ponds'];
 
 export function usePondList(
     keyword?: Nullable<string>,
-    status?: PondStatus,
+    status?: Nullable<PondStatus>,
     pondClass?: PondClass
 ) {
     const pondService = useService(PondService);

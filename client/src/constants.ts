@@ -5,6 +5,7 @@ export const Modes = {
 } as const;
 
 export const PondStatus = {
+    ALL: 'All',
     AVAILABLE: 'For Sale',
     SOLD: 'Sold',
     FOR_RENT: 'For Rent',
@@ -16,6 +17,7 @@ export const MessageType = {
 } as const;
 
 export const PondClass = {
+    ALL: 'All',
     A: 'Class A',
     B: 'Class B',
     C: 'Class C',

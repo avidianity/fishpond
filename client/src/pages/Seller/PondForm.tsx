@@ -281,11 +281,13 @@ const PondForm: FC<Props> = ({ mode }) => {
                             }}
                             value={status}
                         >
-                            {Object.values(PondStatus).map((status, index) => (
-                                <Option key={index} value={status}>
-                                    {status}
-                                </Option>
-                            ))}
+                            {Object.values(PondStatus)
+                                .filter((status) => status !== PondStatus.ALL)
+                                .map((status, index) => (
+                                    <Option key={index} value={status}>
+                                        {status}
+                                    </Option>
+                                ))}
                         </Select>
                     </div>
                     <div className='my-4'>
