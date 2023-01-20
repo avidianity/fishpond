@@ -113,6 +113,7 @@ const Ponds: FC = () => {
                             cardClassName='w-80 border border-gray-100 shadow-lg'
                             headerClassName='relative h-56'
                             bodyClassName='text-center'
+                            multiple
                         />
                     </div>
                 ))}
