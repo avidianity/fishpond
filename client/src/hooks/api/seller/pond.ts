@@ -51,7 +51,9 @@ export function usePondMutation(mode: FormMode) {
                 client.invalidateQueries([...listKey, match.params.id]);
             }
 
-            toast.success('Pond saved successfully!');
+            toast.success(
+                'Pond saved successfully! Please wait for it to be approved.'
+            );
         },
         onError: (error) => {
             if (isAxiosError(error)) {
