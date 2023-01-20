@@ -8,6 +8,16 @@ use App\Models\Owner;
 
 class OwnersController extends Controller
 {
+    protected array $relationships;
+
+    public function __construct()
+    {
+        $this->relationships = [
+            'ponds' => fn ($query) => $query->whereHas('approval', fn ($query) => $query->where('approved', true)),
+            'ponds.ratings',
+        ];
+    }
+
     public function index()
     {
         return OwnerResource::collection(Owner::all());
@@ -15,6 +25,8 @@ class OwnersController extends Controller
 
     public function show(Owner $owner)
     {
+        $owner->load($this->relationships);
+
         return OwnerResource::make($owner);
     }
 }
