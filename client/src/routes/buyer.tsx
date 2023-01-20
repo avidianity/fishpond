@@ -13,6 +13,7 @@ import Finalize from '@/components/Auth/ForgotPassword/Finalize';
 import IssueForm from '@/pages/Buyer/IssueForm';
 import Conversations from '@/pages/Buyer/Conversations';
 import Conversation from '@/pages/Buyer/Conversation';
+import User from '@/components/User';
 
 export const buyerRoutes: Route<DefaultGenerics> = {
     path: 'buyer',
@@ -55,6 +56,10 @@ export const buyerRoutes: Route<DefaultGenerics> = {
                 {
                     path: 'settings',
                     element: <Settings mode={Modes.BUYER} />,
+                },
+                {
+                    path: 'user/:id',
+                    element: <User mode={Modes.BUYER} />,
                 },
                 {
                     path: 'conversations/:id',

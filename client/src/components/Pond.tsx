@@ -102,7 +102,12 @@ const Pond: FC<Props> = ({
                 </Typography>
                 {data.owner ? (
                     <Typography variant='small' className='font-bold'>
-                        {data.owner.first_name} {data.owner.last_name}
+                        <Link
+                            to={`/${mode}/dashboard/user/${data.owner.id}`}
+                            className='text-blue-500'
+                        >
+                            {data.owner.first_name} {data.owner.last_name}
+                        </Link>
                         <i
                             className='fas fa-sms ml-1 hover:text-blue-300 hover:cursor-pointer'
                             onClick={(e) => {

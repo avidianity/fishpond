@@ -13,6 +13,7 @@ import Finalize from '@/components/Auth/ForgotPassword/Finalize';
 import PondForm from '@/pages/Seller/PondForm';
 import Conversation from '@/pages/Seller/Conversation';
 import Conversations from '@/pages/Seller/Conversations';
+import User from '@/components/User';
 
 export const sellerRoutes: Route<DefaultGenerics> = {
     path: 'seller',
@@ -55,6 +56,10 @@ export const sellerRoutes: Route<DefaultGenerics> = {
                 {
                     path: 'settings',
                     element: <Settings mode={Modes.SELLER} />,
+                },
+                {
+                    path: 'user/:id',
+                    element: <User mode={Modes.SELLER} />,
                 },
                 {
                     path: 'conversations/:id',

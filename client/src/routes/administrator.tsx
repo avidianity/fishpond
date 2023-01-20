@@ -15,6 +15,7 @@ import Finalize from '@/components/Auth/ForgotPassword/Finalize';
 import Conversation from '@/pages/Administrator/Conversation';
 import Conversations from '@/pages/Administrator/Conversations';
 import Approvals from '@/pages/Administrator/Approvals';
+import User from '@/components/User';
 
 export const administratorRoutes: Route<DefaultGenerics> = {
     path: 'administrator',
@@ -65,6 +66,10 @@ export const administratorRoutes: Route<DefaultGenerics> = {
                 {
                     path: 'settings',
                     element: <Settings mode={Modes.ADMINISTRATOR} />,
+                },
+                {
+                    path: 'user/:id',
+                    element: <User mode={Modes.ADMINISTRATOR} />,
                 },
                 {
                     path: 'approvals',
