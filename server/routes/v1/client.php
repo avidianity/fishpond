@@ -5,6 +5,7 @@ use App\Http\Controllers\V1\Client\ConversationController;
 use App\Http\Controllers\V1\Client\ForgotPasswordController;
 use App\Http\Controllers\V1\Client\IssueController;
 use App\Http\Controllers\V1\Client\NotificationController;
+use App\Http\Controllers\V1\Client\OwnersController;
 use App\Http\Controllers\V1\Client\PondController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,7 @@ Route::middleware('auth:clients')->group(function () {
     Route::delete('ponds/comment/{comment}', [PondController::class, 'deleteComment'])->name('ponds.comment.destroy');
     Route::post('ponds/comment', [PondController::class, 'comment'])->name('ponds.comment');
     Route::apiResource('ponds', PondController::class)->only(['index', 'show']);
+    Route::apiResource('owners', OwnersController::class)->only(['index', 'show']);
     Route::apiResource('issues', IssueController::class)->only('store');
 
     Route::post('conversations/send', [ConversationController::class, 'send'])->name('conversations.send');
