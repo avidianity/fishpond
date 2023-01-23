@@ -51,10 +51,13 @@ class ConversationService
         /**
          * @var \App\Models\Conversation
          */
-        $conversation = $this->query($user)->findOrFail($id);
+        $conversation = Conversation::with($this->relationships)
+            ->findOrFail($id);
 
         if (!is_null($conversation->sender) && !is_null($conversation->receiver)) {
-            return $conversation;
+            if($conversation->sender->is($user) || $conversation->receiver->is($user)) {
+                return $conversation;
+            }
         }
 
         throw (new ModelNotFoundException)->setModel($conversation, $id);
