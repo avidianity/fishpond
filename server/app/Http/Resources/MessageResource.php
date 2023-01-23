@@ -39,6 +39,9 @@ class MessageResource extends JsonResource
             'first_name' => data_get($user, 'first_name'),
             'last_name' => data_get($user, 'last_name'),
             'email' => data_get($user, 'email'),
+            'image' => [
+                'url' => data_get($user, 'image_url'),
+            ],
         ];
     }
 }
