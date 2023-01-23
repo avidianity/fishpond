@@ -46,6 +46,7 @@ const Pond: FC<Props> = ({
     const http = useService(HttpService);
     const prefix = convertModePrefix(mode);
     const navigate = useNavigate();
+    const user = storage.get('user');
 
     const rate = async (rating: number) => {
         mutation.mutate(rating);
@@ -110,15 +111,17 @@ const Pond: FC<Props> = ({
                         >
                             {data.owner.first_name} {data.owner.last_name}
                         </Link>
-                        <i
-                            className='fas fa-sms ml-1 hover:text-blue-300 hover:cursor-pointer'
-                            onClick={(e) => {
-                                e.preventDefault();
-                                if (data.owner) {
-                                    converse(data.owner);
-                                }
-                            }}
-                        />
+                        {data.owner.id !== user?.id ? (
+                            <i
+                                className='fas fa-sms ml-1 hover:text-blue-300 hover:cursor-pointer'
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (data.owner) {
+                                        converse(data.owner);
+                                    }
+                                }}
+                            />
+                        ) : null}
                     </Typography>
                 ) : null}
                 <Typography variant='small' className='font-bold'>
@@ -130,19 +133,17 @@ const Pond: FC<Props> = ({
                 <Typography variant='small' className='font-bold'>
                     Price: {data.price}
                 </Typography>
-                {!multiple ? (
-                    <Typography variant='small' className='font-bold'>
-                        Location:{' '}
-                        <a
-                            href={data.location_url ?? ''}
-                            target='_blank'
-                            rel='noreferrer'
-                            className='text-blue-500 hover:underline'
-                        >
-                            {data.location_url}
-                        </a>
-                    </Typography>
-                ) : null}
+                <Typography variant='small' className='font-bold'>
+                    Location:{' '}
+                    <a
+                        href={data.location_url ?? ''}
+                        target='_blank'
+                        rel='noreferrer'
+                        className='text-blue-500 hover:underline'
+                    >
+                        {data.location_url}
+                    </a>
+                </Typography>
                 <div className='pt-4 pb-2'>
                     <Divider />
                 </div>

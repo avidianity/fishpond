@@ -105,7 +105,7 @@ const Chat: FC<Props> = ({ mode, onMessage, onUpload, onClose }) => {
                 <div className='flex items-center w-full'>
                     <div>
                         <img
-                            className='w-10 h-10 rounded-full'
+                            className='w-10 h-10 rounded-full object-cover border border-gray-300 shadow-xl'
                             src={parseImageUrl(receiver.image)}
                         />
                     </div>
