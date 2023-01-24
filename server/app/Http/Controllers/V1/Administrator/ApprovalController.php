@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Administrator\Approval\UpdateRequest;
 use App\Http\Resources\ApprovalResource;
 use App\Models\Approval;
+use App\Models\Pond;
+use App\Notifications\PondApprovedNotification;
 use Illuminate\Support\Facades\DB;
 
 class ApprovalController extends Controller
@@ -36,6 +38,17 @@ class ApprovalController extends Controller
             ->findOrFail($id);
 
         $approval->update($request->validated());
+
+        if ($approval->approved) {
+            $approvable = $approval->approvable;
+
+            if ($approvable instanceof Pond) {
+                $approvable->load('owner');
+                $owner = $approvable->owner;
+
+                $owner->notify(new PondApprovedNotification($approvable));
+            }
+        }
 
         return ApprovalResource::make($approval);
     }
