@@ -66,6 +66,8 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
                 } pond.`;
             case 'reported-pond':
                 return `A seller has reported a pond with the message: "${notification.data.message}"`;
+            case 'pond-approved':
+                return 'A pond has been approved.';
         }
     };
 
@@ -81,6 +83,10 @@ const Navbar: FC<Props> = ({ mode, links, onLogout }) => {
                     to: `/${mode}/dashboard/${notification.data.pond_id}`,
                 });
                 break;
+            case 'pond-approved':
+                navigate({
+                    to: `/${mode}/dashboard/${notification.data.pond_id}`,
+                });
         }
     };
 

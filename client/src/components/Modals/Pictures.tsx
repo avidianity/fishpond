@@ -36,7 +36,7 @@ const PicturesModal: FC<Props> = ({ pictures }) => {
                 }}
                 variant='gradient'
             >
-                More Photos
+                More Details
             </Button>
             <Dialog open={open} handler={handleOpen} size='xl'>
                 <DialogHeader>Photos</DialogHeader>
