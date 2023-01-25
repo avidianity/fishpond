@@ -327,11 +327,15 @@ const PondForm: FC<Props> = ({ mode }) => {
                             }}
                             value={pondClass}
                         >
-                            {Object.values(PondClass).map((name, index) => (
-                                <Option key={index} value={name}>
-                                    {name}
-                                </Option>
-                            ))}
+                            {Object.values(PondClass)
+                                .filter(
+                                    (pondClass) => pondClass !== PondClass.ALL
+                                )
+                                .map((name, index) => (
+                                    <Option key={index} value={name}>
+                                        {name}
+                                    </Option>
+                                ))}
                         </Select>
                     </div>
                     <div className='my-4'>

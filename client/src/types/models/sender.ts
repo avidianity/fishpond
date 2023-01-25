@@ -6,4 +6,6 @@ export interface Sender {
     last_name?: string;
     email: string;
     image?: Image;
+    address?: string;
+    phone?: string;
 }

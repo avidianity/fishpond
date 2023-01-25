@@ -14,7 +14,9 @@ export function usePondList(
 ) {
     const pondService = useService(PondService);
     const { data } = useQuery(
-        keyword ? [...listKey, keyword, status] : [...listKey, status],
+        keyword
+            ? [...listKey, keyword, status, pondClass]
+            : [...listKey, status, pondClass],
         () => pondService.all({ keyword, status, class: pondClass })
     );
 
