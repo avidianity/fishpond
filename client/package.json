@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite --open --port=3000 --strictPort",
+        "dev": "vite --open --port=3000 --strictPort --host",
         "build": "tsc && vite build",
         "preview": "vite preview --open --port=3000 --strictPort",
         "lint": "eslint ."

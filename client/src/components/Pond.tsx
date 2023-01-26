@@ -15,7 +15,6 @@ import { Divider } from '@mui/material';
 import { Link, useNavigate } from '@tanstack/react-location';
 import React, { FC } from 'react';
 import ReactStars from 'react-stars';
-import PicturesModal from '@/components/Modals/Pictures';
 import { Seller } from '@/types/models/seller';
 import { HttpService } from '@/services/http';
 import { Conversation } from '@/types/models/converstation';
@@ -23,6 +22,7 @@ import { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 import { PondStatus } from '@/constants';
+import Carousel from '@/components/Carousel';
 
 type Props = {
     mode: Modes;
@@ -85,14 +85,12 @@ const Pond: FC<Props> = ({
         }
     };
 
+    const pictures = [data.image.url, ...(data.images ?? [])];
+
     return (
         <Card className={cardClassName}>
             <CardHeader className={headerClassName}>
-                <img
-                    src={data.image.url}
-                    alt='img-blur-shadow'
-                    className='h-full w-full object-cover'
-                />
+                <Carousel urls={pictures} />
             </CardHeader>
             <CardBody className={bodyClassName}>
                 <Typography variant='h5' className='mb-2'>
@@ -155,11 +153,6 @@ const Pond: FC<Props> = ({
                         {data.description}
                     </Typography>
                 ) : null}
-                <div className='py-4'>
-                    {data.images && data.images.length > 0 ? (
-                        <PicturesModal pictures={data.images} />
-                    ) : null}
-                </div>
             </CardBody>
             <CardFooter divider>
                 <div className='flex items-center justify-between'>
