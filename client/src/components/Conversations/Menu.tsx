@@ -1,7 +1,7 @@
 import { parseImageUrl } from '@/helpers';
 import { useService } from '@/hooks';
 import { StorageService } from '@/services/storage';
-import { ChatUser } from '@/types/misc';
+import { ChatUser, Nullable } from '@/types/misc';
 import { Conversation } from '@/types/models/converstation';
 import { Message } from '@/types/models/message';
 import { Input } from '@material-tailwind/react';
@@ -37,7 +37,7 @@ const Menu: FC<Props> = ({ conversations, onChange, onSearch }) => {
         return `${receiver.first_name} ${receiver.last_name}`;
     };
 
-    const getLastMessage = (messages?: Message[]) => {
+    const getLastMessage = (messages: Nullable<Message[]>) => {
         const last = messages?.last();
 
         if (!last) {
