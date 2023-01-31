@@ -3,6 +3,7 @@ import { useService } from '@/hooks';
 import { StorageService } from '@/services/storage';
 import { ChatUser } from '@/types/misc';
 import { Conversation } from '@/types/models/converstation';
+import { Message } from '@/types/models/message';
 import { Input } from '@material-tailwind/react';
 import dayjs from 'dayjs';
 import React, { FC } from 'react';
@@ -34,6 +35,28 @@ const Menu: FC<Props> = ({ conversations, onChange, onSearch }) => {
         }
 
         return `${receiver.first_name} ${receiver.last_name}`;
+    };
+
+    const getLastMessage = (messages?: Message[]) => {
+        const last = messages?.last();
+
+        if (!last) {
+            return null;
+        }
+
+        if (last.type === 'text') {
+            return last.message;
+        }
+
+        const fileType = last.metadata.type.includes('image')
+            ? 'photo'
+            : 'file';
+
+        if (last.sender.id === id) {
+            return `You sent a ${fileType}.`;
+        }
+
+        return `${last.sender.first_name} sent a ${fileType}.`;
     };
 
     return (
@@ -92,7 +115,7 @@ const Menu: FC<Props> = ({ conversations, onChange, onSearch }) => {
                                     </p>
                                 </div>
                                 <p className='text-grey-dark mt-1 text-sm'>
-                                    {conversation.messages?.last()?.message}
+                                    {getLastMessage(conversation.messages)}
                                 </p>
                             </div>
                         </div>

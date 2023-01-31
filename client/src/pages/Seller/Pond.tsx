@@ -69,7 +69,7 @@ const Pond: FC = () => {
             <BasePond
                 data={pond}
                 mode={Modes.SELLER}
-                headerClassName='relative h-40'
+                headerClassName='relative h-40 md:h-96'
             />
             <Comments
                 comments={pond.comments ?? []}

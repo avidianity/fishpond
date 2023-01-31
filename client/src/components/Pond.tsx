@@ -139,7 +139,7 @@ const Pond: FC<Props> = ({
                         rel='noreferrer'
                         className='text-blue-500 hover:underline'
                     >
-                        {data.location_url}
+                        View
                     </a>
                 </Typography>
                 <div className='pt-4 pb-2'>
