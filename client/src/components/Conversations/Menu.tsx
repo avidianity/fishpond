@@ -48,7 +48,7 @@ const Menu: FC<Props> = ({ conversations, onChange, onSearch }) => {
             return last.message;
         }
 
-        const fileType = last.metadata.type.includes('image')
+        const fileType = last.metadata.type.match(/image\/(.{0,})/g)
             ? 'photo'
             : 'file';
 
