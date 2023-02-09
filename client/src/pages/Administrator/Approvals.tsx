@@ -92,7 +92,7 @@ const Approvals: FC = () => {
             },
             {
                 accessorFn: (row) =>
-                    `${row.approvable?.owner?.first_name} ${row.approvable?.owner?.last_name}`,
+                    `${row.approvable?.owner?.first_name ?? ''} ${row.approvable?.owner?.last_name ?? ''}`,
                 header: 'Owner Name',
             },
             {
