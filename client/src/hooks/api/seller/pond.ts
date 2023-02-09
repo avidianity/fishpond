@@ -52,11 +52,11 @@ export function usePondMutation(mode: FormMode) {
             if (mode === 'edit') {
                 client.invalidateQueries([...listKey, match.params.id]);
 
+                toast.success('Pond saved successfully!');
+            } else {
                 toast.success(
                     'Pond saved successfully! Please wait for it to be approved.'
                 );
-            } else {
-                toast.success('Pond saved successfully!');
             }
         },
         onError: (error) => {
