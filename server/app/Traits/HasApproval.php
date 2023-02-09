@@ -18,6 +18,10 @@ trait HasApproval
                 'approved' => false,
             ]);
         });
+
+        static::deleted(function (self $model) {
+            $model->approval?->delete();
+        });
     }
 
     public function approval(): MorphOne
