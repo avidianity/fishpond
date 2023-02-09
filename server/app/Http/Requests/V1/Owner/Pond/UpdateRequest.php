@@ -32,6 +32,10 @@ class UpdateRequest extends FormRequest
             'images.*' => ['nullable', 'url'],
             'latitude' => ['nullable', 'numeric'],
             'longitude' => ['nullable', 'numeric'],
+            'class' => ['nullable', 'string', 'max:255'],
+            'price' => ['nullable', 'string', 'max:255'],
+            'location_url' => ['nullable', 'url', 'max:255'],
+            'square_meters' => ['nullable', 'string', 'max:255'],
         ];
     }
 }
