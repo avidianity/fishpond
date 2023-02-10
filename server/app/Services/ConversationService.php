@@ -42,6 +42,7 @@ class ConversationService
 
         return $this->query($user)
             ->whereIn('id', $matches->map->getKey()->toArray())
+            ->latest()
             ->get()
             ->filter(function (Conversation $conversation) {
                 return !is_null($conversation->sender) && !is_null($conversation->receiver);
@@ -108,7 +109,7 @@ class ConversationService
     {
         $conversation = $this->make($sender, $receiver, $pond);
 
-        return $conversation->messages()->create([
+        $message = $conversation->messages()->create([
             'type' => MessageType::TEXT,
             'message' => $message,
             'receiver_type' => get_class($receiver),
@@ -116,6 +117,10 @@ class ConversationService
             'sender_type' => get_class($sender),
             'sender_id' => $sender->getKey(),
         ]);
+
+        $conversation->touch();
+
+        return $message;
     }
 
     public function sendFile(User $sender, User $receiver, Pond $pond, UploadedFile $uploadedFile): Message
@@ -124,7 +129,7 @@ class ConversationService
 
         $file = File::process($uploadedFile);
 
-        return $conversation->messages()->create([
+        $message = $conversation->messages()->create([
             'type' => MessageType::FILE,
             'message' => $file->url,
             'metadata' => [
@@ -137,6 +142,10 @@ class ConversationService
             'sender_type' => get_class($sender),
             'sender_id' => $sender->getKey(),
         ]);
+
+        $conversation->touch();
+
+        return $message;
     }
 
     protected function query(User $user): Builder
