@@ -19,6 +19,7 @@ class ApprovalController extends Controller
     public function index()
     {
         $approvals = Approval::with($this->relationships)
+            ->latest()
             ->get();
 
         return ApprovalResource::collection($approvals);

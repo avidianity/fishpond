@@ -61,7 +61,7 @@ class PondController extends Controller
         return PondResource::make($pond);
     }
 
-    public function destroy(Request $request, Pond $pond)
+    public function destroy(Pond $pond)
     {
         $pond->delete();
 

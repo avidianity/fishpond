@@ -3,6 +3,7 @@
 namespace App\Http\Requests\V1\Conversation;
 
 use App\Enums\MessageType;
+use App\Models\Pond;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -31,6 +32,7 @@ class SendRequest extends FormRequest
             'message_type' => ['required', 'string', Rule::in(MessageType::values())],
             'message_text' => [Rule::requiredIf(fn () => $this->input('message_type') === MessageType::TEXT()), 'string'],
             'message_file' => [Rule::requiredIf(fn () => $this->input('message_type') === MessageType::FILE()), 'file'],
+            'pond_id' => ['required', 'uuid', Rule::exists(Pond::class, 'id')],
         ];
     }
 }

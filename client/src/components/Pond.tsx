@@ -3,7 +3,7 @@ import { useService } from '@/hooks';
 import { usePondRate } from '@/hooks/api/buyer/pond';
 import { StorageService } from '@/services/storage';
 import { Modes, Response } from '@/types/misc';
-import type { Pond as Model } from '@/types/models/pond';
+import type { Pond as Model, Pond } from '@/types/models/pond';
 import {
     Card,
     CardHeader,
@@ -58,13 +58,14 @@ const Pond: FC<Props> = ({
         return type === 'buyer';
     };
 
-    const converse = async (seller: Seller) => {
+    const converse = async (seller: Seller, pond: Pond) => {
         try {
             const { data } = await http.post<Response<Conversation>>(
                 `/v1/${prefix}/conversations`,
                 {
                     receiver_type: 'seller',
                     receiver_id: seller.id,
+                    pond_id: pond.id,
                 }
             );
 
@@ -115,7 +116,7 @@ const Pond: FC<Props> = ({
                                 onClick={(e) => {
                                     e.preventDefault();
                                     if (data.owner) {
-                                        converse(data.owner);
+                                        converse(data.owner, data);
                                     }
                                 }}
                             />

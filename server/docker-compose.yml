@@ -3,7 +3,7 @@ services:
   app:
     container_name: fishpond-app
     build:
-      context: ./docker
+      context: ./vendor/laravel/sail/runtimes/8.2
       dockerfile: Dockerfile
       args:
         WWWGROUP: "${WWWGROUP}"

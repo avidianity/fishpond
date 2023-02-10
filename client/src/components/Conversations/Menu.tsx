@@ -105,7 +105,8 @@ const Menu: FC<Props> = ({ conversations, onChange, onSearch }) => {
                             <div className='ml-4 flex-1 border-b border-grey-lighter py-4'>
                                 <div className='flex items-bottom justify-between'>
                                     <p className='text-grey-darkest'>
-                                        {getName(conversation)}
+                                        {getName(conversation)} -{' '}
+                                        {conversation.pond?.name}
                                     </p>
                                     <p className='text-xs text-grey-darkest'>
                                         {dayjs(

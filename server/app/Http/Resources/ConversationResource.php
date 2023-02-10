@@ -19,11 +19,16 @@ class ConversationResource extends JsonResource
      */
     public function toArray($request)
     {
+        $base =  "\\App\\Http\\Resources\\" . class_basename($request->user());
+
+        $resource = "{$base}\\PondResource";
+
         return [
             'id' => $this->getKey(),
             'receiver' => $this->mapUser($this->receiver),
             'sender' => $this->mapUser($this->sender),
             'messages' => MessageResource::collection($this->whenLoaded('messages')),
+            'pond' => $resource::make($this->whenLoaded('pond')),
         ];
     }
 

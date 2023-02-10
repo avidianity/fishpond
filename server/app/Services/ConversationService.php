@@ -6,6 +6,7 @@ use App\Enums\MessageType;
 use App\Models\Conversation;
 use App\Models\File;
 use App\Models\Message;
+use App\Models\Pond;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -19,6 +20,7 @@ class ConversationService
         'receiver',
         'messages.sender',
         'messages.receiver',
+        'pond',
     ];
 
     /**
@@ -55,7 +57,7 @@ class ConversationService
             ->findOrFail($id);
 
         if (!is_null($conversation->sender) && !is_null($conversation->receiver)) {
-            if($conversation->sender->is($user) || $conversation->receiver->is($user)) {
+            if ($conversation->sender->is($user) || $conversation->receiver->is($user)) {
                 return $conversation;
             }
         }
@@ -63,42 +65,48 @@ class ConversationService
         throw (new ModelNotFoundException)->setModel($conversation, $id);
     }
 
-    public function make(User $sender, User $receiver): Conversation
+    public function make(User $sender, User $receiver, Pond $pond): Conversation
     {
         $senderType = get_class($sender);
         $receiverType = get_class($receiver);
 
         $conversation = Conversation::query()
             ->with($this->relationships)
-            ->where(function (Builder $builder) use ($senderType, $sender, $receiverType, $receiver) {
+            ->where(fn (Builder $query) => $query->where(function (Builder $builder) use ($senderType, $sender, $receiverType, $receiver) {
                 return $builder->where('sender_type', $senderType)
                     ->where('sender_id', $sender->getKey())
                     ->where('receiver_type', $receiverType)
                     ->where('receiver_id', $receiver->getKey());
             })
-            ->orWhere(function (Builder $builder) use ($senderType, $sender, $receiverType, $receiver) {
-                return $builder->where('sender_type', $receiverType)
-                    ->where('sender_id', $receiver->getKey())
-                    ->where('receiver_type', $senderType)
-                    ->where('receiver_id', $sender->getKey());
-            })
+                ->orWhere(function (Builder $builder) use ($senderType, $sender, $receiverType, $receiver) {
+                    return $builder->where('sender_type', $receiverType)
+                        ->where('sender_id', $receiver->getKey())
+                        ->where('receiver_type', $senderType)
+                        ->where('receiver_id', $sender->getKey());
+                }))
+            ->where('pond_id', $pond->getKey())
             ->first();
 
         if (!is_null($conversation)) {
             return $conversation;
         }
 
-        return Conversation::create([
+        $conversation = Conversation::create([
             'receiver_type' => $receiverType,
             'receiver_id' => $receiver->getKey(),
             'sender_type' => $senderType,
             'sender_id' => $sender->getKey(),
+            'pond_id' => $pond->getKey(),
         ]);
+
+        $conversation->load($this->relationships);
+
+        return $conversation;
     }
 
-    public function sendText(User $sender, User $receiver, string $message): Message
+    public function sendText(User $sender, User $receiver, Pond $pond, string $message): Message
     {
-        $conversation = $this->make($sender, $receiver);
+        $conversation = $this->make($sender, $receiver, $pond);
 
         return $conversation->messages()->create([
             'type' => MessageType::TEXT,
@@ -110,9 +118,9 @@ class ConversationService
         ]);
     }
 
-    public function sendFile(User $sender, User $receiver, UploadedFile $uploadedFile): Message
+    public function sendFile(User $sender, User $receiver, Pond $pond, UploadedFile $uploadedFile): Message
     {
-        $conversation = $this->make($sender, $receiver);
+        $conversation = $this->make($sender, $receiver, $pond);
 
         $file = File::process($uploadedFile);
 

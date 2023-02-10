@@ -6,4 +6,5 @@ export type Send = {
     message_type: MessageType;
     message_text?: string;
     message_file?: File;
+    pond_id: string;
 };

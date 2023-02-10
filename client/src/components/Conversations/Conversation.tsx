@@ -5,8 +5,9 @@ import { convertPrefixToMode } from '@/helpers';
 import { useService } from '@/hooks';
 import { useConversation, useConversationSend } from '@/hooks/api/conversation';
 import { StorageService } from '@/services/storage';
-import { Modes } from '@/types/misc';
+import { Modes, Valid } from '@/types/misc';
 import { Conversation as ConversationModel } from '@/types/models/converstation';
+import { Pond } from '@/types/models/pond';
 import { useMatch, useNavigate } from '@tanstack/react-location';
 import React, { FC } from 'react';
 
@@ -30,7 +31,7 @@ const Conversation: FC<Props> = ({ mode }) => {
         return conversation.receiver;
     };
 
-    const upload = async (file: File) => {
+    const upload = async (file: File, pond: Pond) => {
         if (conversation) {
             const receiver = getReceiver(conversation);
             await mutation.mutateAsync({
@@ -38,11 +39,12 @@ const Conversation: FC<Props> = ({ mode }) => {
                 receiver_id: receiver.id,
                 message_type: MessageType.FILE,
                 message_file: file,
+                pond_id: pond.id,
             });
         }
     };
 
-    const send = async (message: string) => {
+    const send = async (message: string, pond: Pond) => {
         if (conversation) {
             const receiver = getReceiver(conversation);
             await mutation.mutateAsync({
@@ -50,9 +52,14 @@ const Conversation: FC<Props> = ({ mode }) => {
                 receiver_id: receiver.id,
                 message_type: MessageType.TEXT,
                 message_text: message,
+                pond_id: pond.id,
             });
         }
     };
+
+    if (!conversation) {
+        return null;
+    }
 
     return (
         <Container>
@@ -61,8 +68,12 @@ const Conversation: FC<Props> = ({ mode }) => {
                 onClose={() =>
                     navigate({ to: `/${mode}/dashboard/conversations` })
                 }
-                onUpload={async (file) => await upload(file)}
-                onMessage={async (message) => await send(message)}
+                onUpload={async (file) =>
+                    await upload(file, conversation.pond as Valid)
+                }
+                onMessage={async (message) =>
+                    await send(message, conversation.pond as Valid)
+                }
             />
         </Container>
     );

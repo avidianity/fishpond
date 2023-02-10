@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\V1\Conversation;
 
+use App\Models\Pond;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,6 +28,7 @@ class StoreRequest extends FormRequest
         return [
             'receiver_type' => ['required', 'string', Rule::in(['administrator', 'buyer', 'seller'])],
             'receiver_id' => ['required', 'uuid'],
+            'pond_id' => ['required', 'uuid', Rule::exists(Pond::class, 'id')],
         ];
     }
 }

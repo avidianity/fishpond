@@ -110,7 +110,9 @@ const Chat: FC<Props> = ({ mode, onMessage, onUpload, onClose }) => {
                         />
                     </div>
                     <div className='ml-4'>
-                        <p className='text-grey-darkest'>{getName(receiver)}</p>
+                        <p className='text-grey-darkest'>
+                            {getName(receiver)} - {conversation.pond?.name}
+                        </p>
                     </div>
                     <div className='ml-auto'>
                         <IconButton
