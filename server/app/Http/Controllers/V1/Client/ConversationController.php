@@ -13,6 +13,7 @@ use App\Http\Resources\MessageResource;
 use App\Models\Administrator;
 use App\Models\Client;
 use App\Models\Owner;
+use App\Models\Pond;
 use App\Services\ConversationService;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
@@ -67,7 +68,9 @@ class ConversationController extends Controller
             throw new InvalidUserException;
         }
 
-        $conversation = $this->service->make($client, $model);
+        $pond = Pond::findOrFail($request->validated('pond_id'));
+
+        $conversation = $this->service->make($client, $model, $pond);
 
         return ConversationResource::make($conversation);
     }
@@ -95,12 +98,14 @@ class ConversationController extends Controller
 
         $type = $request->enum('message_type', MessageType::class);
 
+        $pond = Pond::findOrFail($request->validated('pond_id'));
+
         switch ($type) {
             case MessageType::TEXT:
-                $message = $this->service->sendText($client, $model, $request->validated('message_text'));
+                $message = $this->service->sendText($client, $model, $pond, $request->validated('message_text'));
                 break;
             case MessageType::FILE:
-                $message = $this->service->sendFile($client, $model, $request->file('message_file'));
+                $message = $this->service->sendFile($client, $model, $pond, $request->file('message_file'));
                 break;
         }
 
