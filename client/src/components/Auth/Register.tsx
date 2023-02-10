@@ -1,5 +1,5 @@
 import type { Modes as Mode } from '@/types/misc';
-import { Button, Input } from '@material-tailwind/react';
+import { Button, Checkbox, Input } from '@material-tailwind/react';
 import { Link, useNavigate } from '@tanstack/react-location';
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -19,6 +19,7 @@ const Register: FC<Props> = ({ mode, onSubmit }) => {
     const [processing, setProcessing] = useState(false);
     const { register, handleSubmit } = useForm<Inputs>();
     const navigate = useNavigate();
+    const [accepted, setAccepted] = useState(false);
 
     const submit = handleSubmit(async (payload) => {
         setProcessing(true);
@@ -86,7 +87,7 @@ const Register: FC<Props> = ({ mode, onSubmit }) => {
                             disabled={processing}
                         />
                     </div>
-                    <div className='mt-4 mb-2'>
+                    <div className='mt-4'>
                         <Input
                             type='password'
                             label='Repeat Password'
@@ -94,11 +95,33 @@ const Register: FC<Props> = ({ mode, onSubmit }) => {
                             disabled={processing}
                         />
                     </div>
+                    <div className='flex items-center'>
+                        <Checkbox
+                            onChange={() => {
+                                setAccepted(!accepted);
+                            }}
+                            checked={accepted}
+                        />
+                        <span className='text-xs'>
+                            I have read and agree to the{' '}
+                            <span
+                                className='text-blue-500 hover:underline hover:cursor-pointer'
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    navigate({
+                                        to: '/terms-and-conditions',
+                                    });
+                                }}
+                            >
+                                terms and conditions.
+                            </span>
+                        </span>
+                    </div>
                     <div className='mb-4'>
                         <Button
                             type='submit'
                             className='w-full'
-                            disabled={processing}
+                            disabled={processing || !accepted}
                         >
                             {!processing ? (
                                 'Sign Up'
