@@ -42,7 +42,6 @@ class ConversationService
 
         return $this->query($user)
             ->whereIn('id', $matches->map->getKey()->toArray())
-            ->latest((new Conversation)->getUpdatedAtColumn())
             ->get()
             ->filter(function (Conversation $conversation) {
                 return !is_null($conversation->sender) && !is_null($conversation->receiver);
@@ -154,6 +153,7 @@ class ConversationService
 
         return Conversation::query()
             ->with($this->relationships)
+            ->latest((new Conversation)->getUpdatedAtColumn())
             ->where(function (Builder $query) use ($type, $user) {
                 return $query->where('sender_type', $type)
                     ->where('sender_id', $user->getKey());
