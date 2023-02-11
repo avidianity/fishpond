@@ -42,7 +42,7 @@ class ConversationService
 
         return $this->query($user)
             ->whereIn('id', $matches->map->getKey()->toArray())
-            ->latest()
+            ->latest((new Conversation)->getUpdatedAtColumn())
             ->get()
             ->filter(function (Conversation $conversation) {
                 return !is_null($conversation->sender) && !is_null($conversation->receiver);
